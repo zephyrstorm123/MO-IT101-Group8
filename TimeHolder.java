@@ -1,7 +1,7 @@
 public class TimeHolder {
-    public int[] TimeHolder(int employeeNumber) {
+    public static int[] EmployeeHours(int employeeNumber) {
         int[][] time = {
-                { 10001, 9, 9, 9, 9, 9, 9, 9, 9 },
+                { 10001, 9, 9, 9, 9, 8, 9, 9, 9 },
                 { 10002, 8, 9, 10, 11, 12, 13, 14, 15 },
                 { 10003, 8, 9, 10, 11, 12, 13, 14, 15 },
                 { 10004, 8, 9, 10, 11, 12, 13, 14, 15 },

@@ -11,7 +11,6 @@ public class Main {
         String line = "";
 
         EmployeeDetails[] employee = new EmployeeDetails[25];
-        System.out.println(employee.length);
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
