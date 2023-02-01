@@ -112,8 +112,12 @@ public class PayrollSystem {
         	profMenu();
         	break;
         case 2:
-        	System.out.println("Wrong Input or Option Currently Unavailable. Please Try Again.");
-        	mMenu();
+        	if (empNo == 10001) {
+        	EmployeeMaster.main(null);
+        	} else {
+        		System.out.println("You do not have access to this option.");
+        		mMenu();
+        	}
         	break;
         case 6:
         	System.out.println("Enter '0' to Exit Application.");
