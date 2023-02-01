@@ -121,7 +121,7 @@ public class PayrollSystem {
         	break;
         case 2:
         	if (empNo == 10001) {
-        	TextToList.main(null);
+        	EmployeeMaster1.main(null);
         	} else {
         		System.out.println("You do not have access to this option.");
         		mMenu();
