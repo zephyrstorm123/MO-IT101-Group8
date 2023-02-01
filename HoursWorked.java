@@ -63,7 +63,7 @@ public class HoursWorked {
 		
 	}
 	
-	public static void dTime() {
+	public static void dTime() throws Exception{
 		
 	
 			System.out.println("Daily Timesheet:");
