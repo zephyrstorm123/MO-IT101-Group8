@@ -25,17 +25,17 @@ public class PayrollSystem {
 	static int emp3No = 10003;
 	static String emp3pw = "Empl1111";
 	static String emp3un = "Brad";
-	static int i;
+	
 	
 	static Scanner scan = new Scanner(System.in);
 	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		System.out.println("Welcome to MotorPH Payroll System");
 		insertData();
 	}
 	
-	public static void insertData() throws Exception {
+	public static void insertData() {
 		System.out.println("Please Enter Employee Number:");
         empNo = scan.nextInt();
         
@@ -50,13 +50,13 @@ public class PayrollSystem {
         }
 	}
 	
-	public static void againPass() throws Exception {
+	public static void againPass() {
 		System.out.println("Incorrect Password. Please Try Again.");
 		pass = scan.next();
 		loginPage();
 	}
 	
-	public static void loginPage() throws Exception {
+	public static void loginPage() {
 		if (empNo == emp1No || empNo == emp2No || empNo == emp3No) {
 			System.out.println();
 			if (pass.equals(emp1pw) && empNo == emp1No || pass.equals(emp2pw) && empNo == emp2No || pass.equals(emp3pw) && empNo == emp3No) {
@@ -65,15 +65,7 @@ public class PayrollSystem {
 	         	System.out.println("===================================================");
 	         	mMenu();
 			} else {
-				i++;
-				
-					if (i <= 3) {
-					againPass();
-					
-					} else {
-						System.out.println("!! Too Many Incorrect Attempts. App Locked !!");
-					}
-				
+				againPass();
 			}
 			
 		} else if (empNo == 0) {
@@ -87,7 +79,7 @@ public class PayrollSystem {
 		}
 	}
 	
-	public static void mMenu() throws Exception {
+	public static void mMenu() {
 		switch (empNo) {
 		case 10001: 
 			System.out.println();
@@ -121,7 +113,7 @@ public class PayrollSystem {
         	break;
         case 2:
         	if (empNo == 10001) {
-        	TextToList.main(null);
+        	EmployeeMaster.main(null);
         	} else {
         		System.out.println("You do not have access to this option.");
         		mMenu();
@@ -139,7 +131,7 @@ public class PayrollSystem {
         }
 	}
 	
-	public static void profMenu() throws Exception {
+	public static void profMenu() {
 		System.out.println("My Profile Menu:");
     	System.out.println();
     	System.out.println("1. Personal Information");
@@ -176,7 +168,7 @@ public class PayrollSystem {
 
 	}
 	
-	public static void perInfo() throws Exception {
+	public static void perInfo() {
 		
 		// EMPLOYEE INFOS
 		
@@ -230,7 +222,7 @@ public class PayrollSystem {
 		
 	}
 	
-	public static void salRec() throws Exception {
+	public static void salRec() {
 		
 		String emp1salRec = "Employee No: 10001\r\n"
 				+ "Employee Status: Regular\r\n"
@@ -275,7 +267,7 @@ public class PayrollSystem {
 		}		
 	}
 	
-	public static void dTimeLoc() throws Exception{
+	public static void dTimeLoc() {
 		switch (empNo) {
 		
 		case 10001:

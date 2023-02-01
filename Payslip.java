@@ -29,11 +29,11 @@ public class Payslip {
 	   static double[] taxablePay = {(basicHr[0] + regOt[0])}; 
 
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		paySlipMenu();
 	}
 	
-	public static void paySlipMenu() throws Exception{
+	public static void paySlipMenu() {
 		
 		if (PayrollSystem.empNo == 10001) {
 			System.out.println("Please enter pay period:");
@@ -54,7 +54,7 @@ public class Payslip {
 		   }
 		
 	
-	public static void paySlipInfoEmp1() throws Exception {
+	public static void paySlipInfoEmp1() {
 		switch (payP) {
    			case 1:
    				System.out.println("----- MotorPH -----");

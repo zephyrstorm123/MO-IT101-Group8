@@ -1,25 +1,25 @@
-10001	Crisostomo, Jose	PHP 62,670.00
-10002	Mata, Christian		PHP 42,975.00
-10003	San Jose, Brad 		PHP 42,975.00
-10004	Salcedo, Anthony	PHP 60,825.00
-10005	Romualdez, Alice	PHP 22,500.00
-10006	Atienza, Rosie	 	PHP 22,500.00
-10007	Farala, Martha		PHP 24,000.00
-10008	Martinez, Leila		PHP 24,000.00
-10009	San Jose, Allison 	PHP 22,500.00
-10010	Rosario, Cydney 	PHP 22,500.00
-10011	Lopez, Josie 		PHP 38,475.00
-10012	De Leon, Selena 	PHP 41,850.00
-10013	Romualdez, Fredrick 	PHP 63,500.00
-10014	Bautista, Mark 		PHP 23,250.00
-10015	Lazaro, Darlene 	PHP 23,250.00
-10016	Delos Santos, Kolby 	PHP 24,000.00
-10017	Santos, Vella 		PHP 22,500.00
-10018	Del Rosario, Tomas	PHP 22,500.00
-10019	Tolentino, Jacklyn 	PHP 24,000.00
-10020	Gutierrez, Percival 	PHP 24,750.00
-10021	Manalaysay, Garfield 	PHP 24,750.00
-10022	Villegas, Lizeth 	PHP 24,000.00
-10023	Ramos, Carol 		PHP 22,500.00
-10024	Maceda, Emelia 		PHP 22,500.00
-10025	Aguilar, Delia 		PHP 22,500.00
+10001	Crisostomo, Jose	PHP 62,670
+10002	Mata, Christian		PHP 42,975
+10003	San Jose, Brad 		PHP 42,975
+10004	Salcedo, Anthony	PHP 60,825
+10005	Romualdez, Alice	PHP 22,500
+10006	Atienza, Rosie	 	PHP 22,500
+10007	Farala, Martha		PHP 24,000
+10008	Martinez, Leila		PHP 24,000
+10009	San Jose, Allison 	PHP 22,500
+10010	Rosario, Cydney 	PHP 22,500
+10011	Lopez, Josie 		PHP 38,475
+10012	De Leon, Selena 	PHP 41,850
+10013	Romualdez, Fredrick 	PHP 63,500
+10014	Bautista, Mark 		PHP 23,250
+10015	Lazaro, Darlene 	PHP 23,250
+10016	Delos Santos, Kolby 	PHP 24,000
+10017	Santos, Vella 		PHP 22,500
+10018	Del Rosario, Tomas	PHP 22,500
+10019	Tolentino, Jacklyn 	PHP 24,000
+10020	Gutierrez, Percival 	PHP 24,750
+10021	Manalaysay, Garfield 	PHP 24,750
+10022	Villegas, Lizeth 	PHP 24,000
+10023	Ramos, Carol 		PHP 22,500
+10024	Maceda, Emelia 		PHP 22,500
+10025	Aguilar, Delia 		PHP 22,500
