@@ -6,22 +6,22 @@ import java.util.Scanner;
 
 public class EmployeeMaster {
 
-	public static void main(String[] args) {  
+	public static void main(String[] args) throws Exception {  
 		Scanner scan = new Scanner(System.in);
 		
-		System.out.println("----------MOTORPH EMPLOYEE MASTER---------\r"
-				       + "\nEMP No.      EMP NAME       EMP GROSS WAGE\r"
-					   + "\n------------------------------------------");
+		System.out.println("------------MOTORPH EMPLOYEE MASTER-----------\r"
+				       + "\n  EMP No.      EMP NAME       EMP GROSS WAGE\r"
+					   + "\n----------------------------------------------");
 		
 		
 	    try {
 	      File myObj = new File("C:\\Users\\Michael\\eclipse-workspace\\Exercise\\src\\com\\mycompany\\exercise1\\copy\\Employees.txt");
-	      Scanner myReader = new Scanner(myObj);  
-	      while (myReader.hasNextLine()) {
-	        String data = myReader.nextLine();
+	      Scanner txtReader = new Scanner(myObj);  
+	      while (txtReader.hasNextLine()) {
+	        String data = txtReader.nextLine();
 	        System.out.println(data);
 	      }
-	      myReader.close();
+	      txtReader.close();
 	    } catch (FileNotFoundException e) {
 	      System.out.println("An error occurred.");
 	      e.printStackTrace();
@@ -31,6 +31,8 @@ public class EmployeeMaster {
 	    int emo = scan.nextInt();
 	    if (emo == 1) {
 	    	PayrollSystem.mMenu();
+	    
+	    scan.close();
 	    }
 	  }
 	
