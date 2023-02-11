@@ -55,6 +55,7 @@ public class Login {
 
                     break;
                 case (3):
+                    // Calculate Gross Salary of the Employee
 
                     System.out.println("\n");
                     System.out.println("===================================================================");
@@ -69,6 +70,8 @@ public class Login {
 
                     break;
                 case (4):
+                    // Compute Net Salary of the Employee
+
                     System.out.println("\n");
                     System.out.println("===================================================================");
                     double Philhealth = CalculatePhilhealth.Philhealth(basicSalary);
