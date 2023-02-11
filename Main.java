@@ -10,73 +10,67 @@ public class Main {
         String line;
         int count = 0;
 
+        // Creates an object array for each employee in the path text file
         EmployeeDetails[] employee = new EmployeeDetails[25];
         Scanner inFile = new Scanner(new FileReader(path));
 
-        try {
-            while (inFile.hasNextLine()) {
+        while (inFile.hasNextLine()) {
 
-                line = inFile.nextLine();
-                String[] values = line.split("  ");
+            line = inFile.nextLine();
+            String[] values = line.split("  ");
 
-                // This logic gate skips the first line of the text file which keeps the header
-                // of the files.
-                if (count == 0) {
-                    count++;
-                    continue;
-                }
-
-                employee[count - 1] = new EmployeeDetails(values[0], values[1], values[2], values[3], values[4],
-                        values[5],
-                        values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13],
-                        values[14], values[15], values[16], values[17], values[18]);
+            // This logic gate skips the first line of the text file which keeps the header
+            // of the files.
+            if (count == 0) {
                 count++;
+                continue;
             }
-        } finally {
+
+            employee[count - 1] = new EmployeeDetails(values[0], values[1], values[2], values[3], values[4],
+                    values[5],
+                    values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13],
+                    values[14], values[15], values[16], values[17], values[18]);
+            count++;
         }
 
-        try {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter employee number");
-            int empNumber = sc.nextInt();
+        // Login In System
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter employee number");
+        int empNumber = sc.nextInt();
 
-            for (int i = 0; i < employee.length; i++) {
-                int employeeNumber = Integer.parseInt(employee[i].employeeNumber);
-                if (empNumber == employeeNumber) {
-                    int pwCount = 0;
+        for (int i = 0; i < employee.length; i++) {
+            int employeeNumber = Integer.parseInt(employee[i].employeeNumber);
+            if (empNumber == employeeNumber) {
+                int pwCount = 0;
 
-                    StringBuilder reverseLname = new StringBuilder();
-                    reverseLname.append(employee[i].lname);
-                    String employeePw = reverseLname.reverse().toString();
-                    System.out.println(employeePw);
+                StringBuilder reverseLname = new StringBuilder();
+                reverseLname.append(employee[i].lname);
+                String employeePw = reverseLname.reverse().toString();
+                System.out.println(employeePw);
 
-                    while (pwCount < 3) {
-                        System.out.println("Please Enter Password");
-                        String inputPw = sc.next();
+                while (pwCount < 3) {
+                    System.out.println("Please Enter Password");
+                    String inputPw = sc.next();
 
-                        if (inputPw == employeePw) {
-                            Login login = new Login();
-                            login.Login(employee[i]);
-                            break;
-                        } else {
-                            pwCount++;
-                            continue;
-                        }
+                    if (inputPw.equals(employeePw)) {
+                        Login login = new Login();
+                        login.Login(employee[i]);
+                        break;
+                    } else {
+                        pwCount++;
+                        continue;
                     }
-
-                    System.out.println("You have exceeded number of tries");
-                    System.exit(0);
-                } else {
-                    continue;
                 }
+
+                System.out.println("You have exceeded number of tries");
+                System.exit(0);
+            } else {
+                continue;
             }
-
-            System.out.println("Employee Number Not Found");
-
-            sc.close();
-
-        } finally {
-
         }
+
+        System.out.println("Employee Number Not Found");
+
+        sc.close();
     }
 }
