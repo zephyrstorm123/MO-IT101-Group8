@@ -1,4 +1,4 @@
-package com.mycompany.exercise1.copy;
+package com.motorph.payrollsystem;
 
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ public class Payslip {
 	
 	   static Scanner scan = new Scanner(System.in);
 	   static int emp1No = 10001, emp2No = 10002;
-	   static String[] emp1payD = {"September 10, 2022","September 17, 2022","September 24, 2022"};
+	   static String[] emp1payD = {"September 5-9, 2022","September 12-16, 2022","September 19-23, 2022"};
 	   static String emp1Name = "CRISOSTOMO, JOSE";
 	   static String emp1tinNo = "317-674-022-000";
 	   static String emp1sssNo = "49-1632020-8";
@@ -29,13 +29,13 @@ public class Payslip {
 	   static double[] taxablePay = {(basicHr[0] + regOt[0])}; 
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		paySlipMenu();
 	}
 	
-	public static void paySlipMenu() {
+	public static void paySlipMenu() throws Exception{
 		
-		if (PayrollSystem.empNo == 10001) {
+		if (PayrollSystem.empNo.equals("10001")) {
 			System.out.println("Please enter pay period:");
 			   
 			for (int i = 0; i <= 2; i++) {	   
@@ -53,11 +53,11 @@ public class Payslip {
 	   
 		   }
 		
-	
-	public static void paySlipInfoEmp1() {
+	//Computes and Prints Payslip info of Employee 1
+	public static void paySlipInfoEmp1() throws Exception {
 		switch (payP) {
    			case 1:
-   				System.out.println("----- MotorPH -----");
+   				System.out.println("\n--------- MotorPH ---------");
    				System.out.println("PAYROLL INFORMATION");
    				System.out.println("Employee Name: " + emp1Name);
    				System.out.println("Payroll Period: " + payPview[0]); 
