@@ -26,7 +26,7 @@ public class PayrollSystem {
 	static String emp3pw = "Empl1111";
 	static String emp3un = "Brad";
 	
-	static int i;
+	static int i; //Variable that counts number of incorrect user log in tries
 	static String mmo, pmo;
 	static String invInp;
 	
@@ -35,7 +35,7 @@ public class PayrollSystem {
 	//Welcome page, will direct to login page
 	public static void main(String[] args) throws Exception {
 		System.out.println("Welcome to MotorPH Payroll System");
-		insertData();
+		PrintnRead.print_read();
 	}
 	
 	//User login page
@@ -60,7 +60,12 @@ public class PayrollSystem {
 	
 	//Wrong password message and reinitialize variable for password
 	public static void againPass() throws Exception {
+		if (i <= 1) {
 		System.out.println("Incorrect Password. Please Try Again.");
+		} else {
+			System.out.println("Incorrect Password. Please Try Again.");
+			System.out.println("!! " + (4 - i) + " Attempt/s Left !!");
+		}
 		pass = scan.next();
 		loginPage();
 	}
@@ -70,7 +75,7 @@ public class PayrollSystem {
 		if (empNo.equals(emp1No) || empNo.equals(emp2No) || empNo.equals(emp3No)) {
 			System.out.println();
 			if (pass.equals(emp1pw) && empNo.equals(emp1No) || pass.equals(emp2pw) && empNo.equals(emp2No) || pass.equals(emp3pw) && empNo.equals(emp3No)) {
-				
+				i = 0;
 				System.out.println("===================================================");
 	            System.out.println("                LOGIN SUCCESSFUL");
 	         	System.out.println("===================================================");
@@ -94,13 +99,13 @@ public class PayrollSystem {
 		}
 		
 		else {
-			System.out.println("Employee Number Not Found.");
+			System.out.println("Invalid Employee Number.");
 			insertData();
 		}
 	}
 	
 	//System main menu, thus the mMenu method. Lol
-	//Only Option 1, 2, and 6 are functional, for now (TT ^ TT) 
+	//Only Option 3-6 are not yet functional, for now (TT ^ TT) 
 	public static void mMenu() throws Exception {
 		switch (empNo) {
 		case "10001": 
@@ -119,10 +124,10 @@ public class PayrollSystem {
         System.out.println();
         System.out.println("1. My Employee Profile");
         System.out.println("2. Employee Master");
-        System.out.println("3. Timekeeping");
-        System.out.println("4. Payroll Register");
-        System.out.println("5. System Administration");
-        System.out.println("6. Log Out");
+//        System.out.println("3. Timekeeping");
+//        System.out.println("4. Payroll Register");
+//        System.out.println("5. System Administration");
+        System.out.println("3. Log Out");
         
         
         mmo = scan.next();
@@ -134,18 +139,18 @@ public class PayrollSystem {
         	break;
         case "2":
         	if (empNo.equals("10001")) {
-        	EmployeeMaster.main(null);
+        	EmployeeMaster.empMaster();
         	} else {
         		System.out.println("You do not have access to this option.");
         		mMenu();
         	}
         	break;
-        case "6":
+        case "3":
         	System.out.println("Enter '0' to Exit Application.");
         	main(null);
         	break;
         default :
-        	System.out.println("Wrong Input or Option Currently Unavailable. Please Try Again.");
+        	System.out.println("Wrong Input. Please Try Again.");
         	mMenu();
         	break;
         	
@@ -159,9 +164,9 @@ public class PayrollSystem {
     	System.out.println("1. Personal Information");
     	System.out.println("2. Salary Information");
     	System.out.println("3. Daily Timesheet");
-    	System.out.println("4. Leave and Overtime");
-    	System.out.println("5. Payslip");
-    	System.out.println("6. Back");
+//    	System.out.println("4. Leave and Overtime");
+    	System.out.println("4. Payslip");
+    	System.out.println("5. Back");
     	
 
         pmo = scan.next();
@@ -176,14 +181,14 @@ public class PayrollSystem {
         case "3":
         	dTimeLoc();
         	break;
-        case "5":
+        case "4":
         	Payslip.paySlipMenu();
         	break;
-        case "6":
+        case "5":
         	mMenu();
         	break;
         default :
-        	System.out.println("Wrong Input or Option Currently Unavailable. Please Try Again.");
+        	System.out.println("Wrong Input. Please Try Again.");
         	profMenu();
         	break;
     	
@@ -322,13 +327,13 @@ public class PayrollSystem {
 		switch (empNo) {
 		
 		case "10001":
-			HoursWorked.main(null);
+			HoursWorked.dTime();
 			break;
 		case "10002":
-			HoursWorked.main(null);
+			HoursWorked.dTime();
 			break;
 		case "10003":
-			HoursWorked.main(null);
+			HoursWorked.dTime();
 			break;
 		default:
 			System.out.println("Wrong Input or Option Currently Unavailable. Please Try Again.");

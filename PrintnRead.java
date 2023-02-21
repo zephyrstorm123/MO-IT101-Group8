@@ -15,9 +15,11 @@ public class PrintnRead {
     static double[] dayPy = new double[2150];
     static double[] weekPy = new double[430];
     static double[] emp1Hrs;
+    static double[] allEmpRt = new double [2150];
+    static double[] empHrsWkd = new double[2150];
 
 
-	    public static void main(String[] args) throws Exception
+	    public static void print_read() throws Exception
 	    {
 	        // declare and initialize the variables
 
@@ -41,6 +43,7 @@ public class PrintnRead {
 	            empPy = empHrs * empRt;
 	            
 	            dayPy[i] = empPy;
+	            allEmpRt[i] = empRt;
 	            
 	            outFile.printf("%5.2f %n",empHrs);
 	            i++;
@@ -56,7 +59,24 @@ public class PrintnRead {
 	        j++;
 	        k++;
 	        }
-	        EmployeeMaster.empMaster();
+	        
+			FileReader file1 = new FileReader("HrsWkd.txt");
+	        Scanner inFile1 = new Scanner(file1);
+
+
+	        // Read till end of file
+	        int l = 0;
+	        while (inFile1.hasNext())
+	        {
+
+	        	empHrsWkd[l] = inFile1.nextDouble();
+
+	            l++;
+	        }
+
+	        inFile1.close();
+	        
+	        PayrollSystem.insertData();
 	        
 	}
 	

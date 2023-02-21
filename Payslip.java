@@ -1,6 +1,7 @@
 package com.motorph.payrollsystem;
 
 import java.util.Scanner;
+import java.io.*;
 
 public class Payslip {
 	
@@ -18,21 +19,19 @@ public class Payslip {
 	   static int rice = 1500;
   	   static int cloth = 1000;
   	   static int pho = 1000;
-	   static double[] hourWk = {HoursWorked.emp1HrsTtl,HoursWorked.emp1HrsTtl2};
+	   static double[] hourWk = {PrintnRead.empHrsWkd[50] + PrintnRead.empHrsWkd[75] + PrintnRead.empHrsWkd[100] + PrintnRead.empHrsWkd[125] + PrintnRead.empHrsWkd[150]};
+	   static double emp1HrsTtl;
 	   static double[] hourOt = {HoursWorked.emp1OtTtl1};
 	   static int payP;
 	   static int payPc;
 	   static String[] payPview = {"September 2022 1st Pay Period","September 2022 2nd Pay Period","September 2022 3rd Pay Period"};
 	   static double nonTaxPay = ((rice / 4) + (cloth/4) + (pho/4));
-	   static double[] basicHr = {(hourWk[0] * emp1hourRt)};
+	   static double[] basicHr = {(hourWk[0] * PrintnRead.allEmpRt[0])};
 	   static double[] regOt = {(hourOt[0] * emp1OtRate)};
 	   static double[] taxablePay = {(basicHr[0] + regOt[0])}; 
 
 	
-	public static void main(String[] args) throws Exception {
-		paySlipMenu();
-	}
-	
+//Displays Menu for Payslip
 	public static void paySlipMenu() throws Exception{
 		
 		if (PayrollSystem.empNo.equals("10001")) {
@@ -55,6 +54,8 @@ public class Payslip {
 		
 	//Computes and Prints Payslip info of Employee 1
 	public static void paySlipInfoEmp1() throws Exception {
+		
+		
 		switch (payP) {
    			case 1:
    				System.out.println("\n--------- MotorPH ---------");
@@ -74,14 +75,14 @@ public class Payslip {
 		   		System.out.println("Overtime Rate: PHP " + emp1OtRate);
 		   	    System.out.println("\nEARNINGS");
 		   	    System.out.println("Taxable Earnings:");
-		   	    System.out.println("Basic Pay - " + hourWk[0] + " hr(s): PHP " + basicHr[0]);
+		   	    System.out.printf("\nBasic Pay - " + (hourWk[0]-regOt[0]) + " hr(s): PHP %5.2f", ((hourWk[0]-regOt[0])*PrintnRead.allEmpRt[0]));
 		   	    
-		   	    if (hourOt[0] != 0) {
-		   	    	System.out.println("Regular OT - " + hourOt[0] + " hr(s): PHP " + regOt[0]);
-		   	    	System.out.println("TOTAL TAXABLE PAY: PHP " + (basicHr[0] + regOt[0]));
-		   	    } else {
-		   	    	System.out.println("TOTAL TAXABLE PAY: PHP " + (basicHr));   	
-		   	    }
+		   	    
+		   	    	System.out.printf("\nRegular OT - " + hourOt[0] + " hr(s): PHP %5.2f", regOt[0]);
+		   	    	System.out.printf("\nTOTAL TAXABLE PAY: PHP %5.2f %n", (basicHr[0] + regOt[0]));
+		   	    
+		   	
+		   	    
 		   	    	
 		   	    	
 		   	    System.out.println("\nNon-Taxable Earnings:");
@@ -90,11 +91,10 @@ public class Payslip {
 		   	    System.out.println("Phone Allowance: PHP " + (pho / 4)); 
 		   	    System.out.println("TOTAL NON-TAXABLE PAY: PHP " + nonTaxPay);
 		   	    
-		   	    if (hourOt[0] != 0) {
+		   	    
 		   	    System.out.println("\nGROSS EARNINGS: PHP " + (basicHr[0] + regOt[0] + nonTaxPay));
-		   	    } else {
-		   	     System.out.println("\nGROSS EARNINGS: PHP " + (basicHr[0] + nonTaxPay));	
-		   	    }
+		   	    
+		   	     
 		   	    
 	//Deduction and Net Earnings Computation
 		   	//SSS
@@ -155,16 +155,76 @@ public class Payslip {
 		   	
 		   	System.out.println("\nDEDUCTIONS:");
 		    System.out.println("SSS: PHP " + sssTot);
-		    System.out.println("PhilHealth: PHP " + phicTot);
+		    System.out.printf("PhilHealth: PHP %5.2f %n", phicTot);
 		    System.out.println("Pag-ibig: PHP " + hdmfTot);
 		    System.out.println("Withholding Tax: PHP " + birTot);
 		    System.out.println("TOTAL DEDUCTIONS: PHP " + (sssTot + phicTot + hdmfTot + birTot));
 		    System.out.println("\nNET EARNINGS: PHP " + (((taxablePay[0]) - dedTtl) + nonTaxPay));
 		   	    
-		   	    System.out.println("\n1. Back");
+		   	    System.out.println("\n1. Print\n2. Back");
 		   	    payPc = scan.nextInt();
-		   	    if (payPc == 1) {
+		   	    if (payPc == 2) {
 		   	    	paySlipMenu();
+		   	    } else if (payPc == 1){
+		   	    	try {
+		   	         PrintWriter slipWriter = new PrintWriter("Payslip_Out.txt");
+		   	         
+		   	         
+		   	      slipWriter.println("\n--------- MotorPH ---------");
+					slipWriter.println("PAYROLL INFORMATION");
+					slipWriter.println("Employee Name: " + emp1Name);
+					slipWriter.println("Payroll Period: " + payPview[0]);
+					slipWriter.println("Pay Date: " + emp1payD[0]);
+					slipWriter.println(" ");
+					slipWriter.println("EMPLOYEE INFORMATION");
+					slipWriter.println("Employee No.: " + emp1No);
+			 		slipWriter.println("TIN: " + emp1tinNo);
+			 		slipWriter.println("SSS No.: " + emp1sssNo);
+			 		slipWriter.println("PHIC No.: " + emp1phicNo);
+			 		slipWriter.println("HDMF No.: " + emp1hdmfNo);
+			 		slipWriter.println("Position: " + emp1pos);
+			 		slipWriter.println("Hourly Rate: PHP " + emp1hourRt);
+			 		slipWriter.println("Overtime Rate: PHP " + emp1OtRate);
+			 	 slipWriter.println("\nEARNINGS");
+			 	 slipWriter.println("Taxable Earnings:");
+			 	 slipWriter.printf("\nBasic Pay - " + (hourWk[0]-regOt[0]) + " hr(s): PHP %5.2f", ((hourWk[0]-regOt[0])*PrintnRead.allEmpRt[0]));
+			 	
+			 	
+			 	 	slipWriter.printf("\nRegular OT - " + hourOt[0] + " hr(s): PHP %5.2f", regOt[0]);
+			 	 	slipWriter.printf("\nTOTAL TAXABLE PAY: PHP %5.2f %n", (basicHr[0] + regOt[0]));
+			 	
+			 	
+			 	
+			 	 	
+			 	 	
+			 	 slipWriter.println("\nNon-Taxable Earnings:");
+			 	 slipWriter.println("Rice Subsidy: PHP " + (rice / 4));
+			 	 slipWriter.println("Clothing Allowance: PHP " + (cloth / 4));
+			 	 slipWriter.println("Phone Allowance: PHP " + (pho / 4));
+			 	 slipWriter.println("TOTAL NON-TAXABLE PAY: PHP " + nonTaxPay);
+			 	
+			 	 
+			 	 slipWriter.println("\nGROSS EARNINGS: PHP " + (basicHr[0] + regOt[0] + nonTaxPay));
+			 	 
+			 	
+		   	         
+			   	 slipWriter.println("\nDEDUCTIONS:");
+			   	slipWriter.println("SSS: PHP " + sssTot);
+			   	slipWriter.printf("\nPhilHealth: PHP %5.2f %n", phicTot);
+			   	slipWriter.println("Pag-ibig: PHP " + hdmfTot);
+			   	slipWriter.println("Withholding Tax: PHP " + birTot);
+			   	slipWriter.println("TOTAL DEDUCTIONS: PHP " + (sssTot + phicTot + hdmfTot + birTot));
+			   	slipWriter.println("\nNET EARNINGS: PHP " + (((taxablePay[0]) - dedTtl) + nonTaxPay));
+		   	         
+		   	         
+		   	         slipWriter.close();
+		   	         System.out.println("\nSuccessfully wrote to the file \"Payslip_Out.txt\"\n.");
+		   	      paySlipMenu();
+		   	       } catch (IOException e) {
+		   	         System.out.println("An error occurred.");
+		   	         e.printStackTrace();
+		   	      paySlipMenu();
+		   	       }
 		   	    }
 		   	    else {
 		   	    	

@@ -13,12 +13,6 @@ import java.util.Scanner;
 public class EmployeeMaster {
 	
 
-	public static void main(String[] args) throws Exception {
-		
-		PrintnRead.main(args);
-		
-		
-		}
 	
 	public static void empMaster () throws Exception {
 		
@@ -30,8 +24,10 @@ public class EmployeeMaster {
 			} catch (IOException e) { 
 				e.printStackTrace(); 
 				} 
-			System.out.println("Enter the Employee Number:"
-					+ "\n(Enter '0' to \"View All\", '1' to \"Exit\")");
+			System.out.println("Enter the Employee Number (10001-10025):"
+					+ "\n(Enter '1' to \"View All\", '0' to \"Exit\")");
+			
+			if (scan.hasNextInt()) {
 			int i = scan.nextInt();
 			
 			if (i >= 10001 && i <= 10025) {
@@ -40,8 +36,8 @@ public class EmployeeMaster {
 					+ "\n============================================="); 
 			System.out.printf("%s %5.2f %n",lines.get(i),PrintnRead.weekPy[i]);
 			System.out.println("=============================================\n");
-			main(null);
-			} else if (i == 0) {
+			empMaster();
+			} else if (i == 1) {
 				System.out.println("Showing All Results:"
 						+ "\n=============================================");
 				
@@ -49,14 +45,19 @@ public class EmployeeMaster {
 				System.out.printf("%s %5.2f %n",lines.get(i),PrintnRead.weekPy[i]);
 				}
 				System.out.println("=============================================\n");
-				main(null);
-			} else if (i == 1) {
+				empMaster();
+			} else if (i == 0) {
 				PayrollSystem.mMenu();
 			}
 			else {
 				System.out.println("\nPlease Enter Valid Input.\n");
-				main(null);
+				empMaster();
 			}
+			} else {
+				System.out.println("\nYou Entered a Character/s. Please Enter Valid Input.\n");
+				empMaster();
+			}
+			
 			
 			scan.close();
 		}
