@@ -2,7 +2,6 @@ package com.motorph.payrollsystem;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -19,8 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.border.EmptyBorder;
+import java.awt.Insets;
 
-public class UserLogin extends JFrame implements ActionListener{
+public class UserLogin1 extends JFrame implements ActionListener{
     private String empNo = "10001";
     private String pass = "Admin1234";
     public boolean loggedIn;
@@ -29,12 +30,11 @@ public class UserLogin extends JFrame implements ActionListener{
     private JLabel lblWelcome, lblEmployeeNumber, lblPassword, background;
     private JTextField txtEmployeeNumber, txtPassword;
     private JButton btnLogin;
-    private JPanel panel_1;
     public Font font = new Font("Nexa Book", Font.BOLD, 15);
     
-    public UserLogin() {
+    public UserLogin1() {
     	setTitle("MotorPH Log In");
-    	setSize(450,260);
+    	setSize(450,250);
     	setLocationRelativeTo(null);
     	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     	addWindowListener(new WindowAdapter() {
@@ -64,6 +64,7 @@ public class UserLogin extends JFrame implements ActionListener{
     	lblEmployeeNumber = new JLabel("Enter Employee Number: ");
     	lblPassword = new JLabel("Enter Password: ");
     	txtEmployeeNumber = new JTextField(10);
+    	txtEmployeeNumber.setMargin(new Insets(2, 4, 2, 4));
     	txtPassword = new JPasswordField(10);
     	btnLogin = new JButton("Log In");
     	btnLogin.addActionListener(this);
@@ -74,7 +75,7 @@ public class UserLogin extends JFrame implements ActionListener{
         txtEmployeeNumber.setBounds(200, 70, 150, 20);
         lblPassword.setBounds(50, 100, 150, 20);
         txtPassword.setBounds(200, 100, 150, 20);
-        btnLogin.setBounds(167, 150, 100, 30);
+        btnLogin.setBounds(167, 165, 100, 30);
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.setBackground(new Color(0, 128, 0));
@@ -86,24 +87,10 @@ public class UserLogin extends JFrame implements ActionListener{
     	panel.setSize(300, 300);
     	panel.setLayout(null);
     	
-    	panel_1 = new JPanel();
-    	panel_1.setBorder(new LineBorder(new Color(255, 215, 215), 1, true));
-    	panel_1.setBackground(new Color(255, 225, 225));
-    	panel_1.setBounds(110, 124, 214, 36);
-    	panel.add(panel_1);
-    	panel_1.setLayout(null);
-    	
-    	JLabel lblLoginFailed = new JLabel("Login Failed. Please check your");
-    	lblLoginFailed.setForeground(new Color(255, 0, 0));
-    	lblLoginFailed.setBounds(18, 0, 191, 20);
-    	panel_1.add(lblLoginFailed);
-    	
-    	JLabel lblUsernameAndPassword = new JLabel("username and password.");
-    	lblUsernameAndPassword.setForeground(new Color(255, 0, 0));
-    	lblUsernameAndPassword.setBounds(31, 16, 178, 20);
-    	
-    	panel_1.setVisible(false);
-    	panel_1.add(lblUsernameAndPassword);
+    	JButton btnNewButton = new JButton("👁");
+    	btnNewButton.setBorder(new EmptyBorder(0, 0, 0, 0));
+    	btnNewButton.setBounds(324, 99, 26, 21);
+    	panel.add(btnNewButton);
     	
     	
 //    	background.setBounds(0, 0, 450, 250);
@@ -117,7 +104,24 @@ public class UserLogin extends JFrame implements ActionListener{
     	panel.add(btnLogin);
     	panel.add(background);
     	
-    	add(panel);
+    	getContentPane().add(panel);
+    	
+    	JPanel panel_1 = new JPanel();
+    	panel_1.setBorder(new LineBorder(new Color(255, 215, 215), 1, true));
+    	panel_1.setBackground(new Color(255, 225, 225));
+    	panel_1.setBounds(110, 124, 214, 36);
+    	panel.add(panel_1);
+    	panel_1.setLayout(null);
+    	
+    	JLabel lblLoginFailed = new JLabel("Login Failed. Please check your");
+    	lblLoginFailed.setForeground(new Color(255, 0, 0));
+    	lblLoginFailed.setBounds(23, 0, 191, 20);
+    	panel_1.add(lblLoginFailed);
+    	
+    	JLabel lblUsernameAndPassword = new JLabel("username and password.");
+    	lblUsernameAndPassword.setForeground(new Color(255, 0, 0));
+    	lblUsernameAndPassword.setBounds(36, 16, 178, 20);
+    	panel_1.add(lblUsernameAndPassword);
     	
     	txtEmployeeNumber.addKeyListener(new KeyAdapter() {
     	    @Override
@@ -139,15 +143,16 @@ public class UserLogin extends JFrame implements ActionListener{
     	    });
 
     }
+    
+    public static void main(String[] args) {
+    	UserLogin userLogin = new UserLogin();
+		userLogin.setVisible(true);
+    }
 
     public void insertData() {
         String empNo = txtEmployeeNumber.getText();
         String pass = txtPassword.getText();
         loggedIn = verifyLogin(empNo, pass);
-        
-        //Error panel
-        
-        
         if (loggedIn) {
         	
         	// Hides the login window
@@ -159,11 +164,7 @@ public class UserLogin extends JFrame implements ActionListener{
     		
     		} else {
     			// Show error message
-    	    	
-    			panel_1.setVisible(true);
-    			btnLogin.setBounds(167, 165, 100, 30);
-//    			setSize(450,260);
-//    			JOptionPane.showMessageDialog(this, "Invalid employee number or password.", "Invalid Input", JOptionPane.INFORMATION_MESSAGE);
+    			JOptionPane.showMessageDialog(this, "Invalid employee number or password.", "Invalid Input", JOptionPane.INFORMATION_MESSAGE);
     			txtEmployeeNumber.setBorder(new LineBorder(new Color(255, 0, 0)));
     			txtPassword.setBorder(new LineBorder(new Color(255, 0, 0)));
     		}
@@ -183,6 +184,4 @@ public class UserLogin extends JFrame implements ActionListener{
 	public String getEmployeeNo() {
 		return empNo;
 	}
-    
-
 }

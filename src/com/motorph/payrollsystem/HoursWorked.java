@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 public class HoursWorked extends JFrame {
 
@@ -100,7 +101,7 @@ public class HoursWorked extends JFrame {
 		lblEnterPayPeriod.setBounds(59, 52, 115, 14);
 		contentPane.add(lblEnterPayPeriod);
 		
-		JComboBox comboBoxPayPeriod = new JComboBox(payPeriod);
+		JComboBox<String> comboBoxPayPeriod = new JComboBox<String>(payPeriod);
 		comboBoxPayPeriod.setBounds(174, 48, 193, 20);
 		
 		contentPane.add(comboBoxPayPeriod);
@@ -211,6 +212,7 @@ public class HoursWorked extends JFrame {
 		panel.add(lblTotalHoursWorked);
 		
 		txtMondayDate = new JTextField();
+
 		txtMondayDate.setDisabledTextColor(new Color(128, 128, 128));
 		txtMondayDate.setSelectionColor(new Color(0, 0, 160));
 		txtMondayDate.setEnabled(false);

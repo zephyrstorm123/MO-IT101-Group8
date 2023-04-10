@@ -25,31 +25,10 @@ import javax.swing.JScrollPane;
 public class Payslip extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtEmployeeName;
-	private JTextField txtPayrollPeriod;
-	private JTextField txtPayDate;
-	private JTextField txtEmployeeNo;
-	private JTextField txtTIN;
-	private JTextField txtPhicNo;
-	private JTextField txtHdmfNo;
-	private JTextField txtSssNo;
-	private JTextField txtPosition;
-	private JTextField txtHourlyRate;
-	private JTextField txtOvertimeRate;
-	private JTextField txtBasicPay;
-	private JTextField txtRiceSubsidy;
-	private JTextField txtPhoneSubsidy;
-	private JTextField txtClothingAllowance;
-	private JTextField txtTotalNonTaxable;
-	private JTextField txtTotalTaxable;
-	private JTextField txtSss;
-	private JTextField txtPagibig;
-	private JTextField txtPhilhealth;
-	private JTextField txtWithholdingTax;
-	private JTextField txtTotalDeductions;
-	private JTextField txtNetEarnings;
-	private JTextField txtGrossEarnings;
-	private JTextField txtBasicPayHrs;
+	private JTextField txtEmployeeName, txtPayrollPeriod, txtPayDate, txtEmployeeNo, txtTIN, txtPhicNo, txtHdmfNo,
+	txtSssNo, txtPosition, txtHourlyRate,txtOvertimeRate, txtBasicPay, txtRiceSubsidy, txtPhoneSubsidy,
+	txtClothingAllowance, txtTotalNonTaxable, txtTotalTaxable, txtSss, txtPagibig, txtPhilhealth, txtWithholdingTax,
+	txtTotalDeductions, txtNetEarnings, txtGrossEarnings, txtBasicPayHrs;
 	
 	private String[] payPeriod = {"======= Pay Period =======",
 								  "1st Week September 2022"}; // For JComboBox use
@@ -129,7 +108,7 @@ public class Payslip extends JFrame {
 		lblEnterPayPeriod.setBounds(66, 48, 104, 14);
 		contentPane.add(lblEnterPayPeriod);
 		
-		JComboBox comboBoxPayPeriod = new JComboBox(payPeriod);
+		JComboBox<String> comboBoxPayPeriod = new JComboBox<String>(payPeriod);
 		comboBoxPayPeriod.setBounds(180, 44, 208, 22);
 		contentPane.add(comboBoxPayPeriod);
 		
@@ -595,10 +574,10 @@ public class Payslip extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (comboBoxPayPeriod.getSelectedItem().equals(payPeriod[1])) {
+					JOptionPane.showMessageDialog(Payslip.this, "Printed to Payslip_Out.txt file.", "Success!", JOptionPane.INFORMATION_MESSAGE, null);
 				try {
 					Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + "Payslip_Out.txt");
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 					}
 				} else {
