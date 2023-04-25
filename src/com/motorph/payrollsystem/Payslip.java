@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,18 +26,18 @@ import javax.swing.JScrollPane;
 public class Payslip extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtEmployeeName, txtPayrollPeriod, txtPayDate, txtEmployeeNo, txtTIN, txtPhicNo, txtHdmfNo,
+	protected JTextField txtEmployeeName, txtPayrollPeriod, txtPayDate, txtEmployeeNo, txtTIN, txtPhicNo, txtHdmfNo,
 	txtSssNo, txtPosition, txtHourlyRate,txtOvertimeRate, txtBasicPay, txtRiceSubsidy, txtPhoneSubsidy,
 	txtClothingAllowance, txtTotalNonTaxable, txtTotalTaxable, txtSss, txtPagibig, txtPhilhealth, txtWithholdingTax,
 	txtTotalDeductions, txtNetEarnings, txtGrossEarnings, txtBasicPayHrs;
 	
-	private String[] payPeriod = {"======= Pay Period =======",
+	protected String[] payPeriod = {"======= Pay Period =======",
 								  "1st Week September 2022"}; // For JComboBox use
 	private HoursWorked hrsWkd;
 	
 	private PrintNReadTxt printRead;
-	private double[] allEmpRate, weeklyPay;
-	private double rice = 1500.0 / 4, phone = 1000.0 / 4, clothes = 1000.0 / 4;
+	protected double[] allEmpRate, weeklyPay;
+	protected double rice = 1500.0 / 4, phone = 1000.0 / 4, clothes = 1000.0 / 4;
 
 	/**
 	 * Launch the application.
@@ -108,7 +109,7 @@ public class Payslip extends JFrame {
 		lblEnterPayPeriod.setBounds(66, 48, 104, 14);
 		contentPane.add(lblEnterPayPeriod);
 		
-		JComboBox<String> comboBoxPayPeriod = new JComboBox<String>(payPeriod);
+		JComboBox<String> comboBoxPayPeriod = new JComboBox(payPeriod);
 		comboBoxPayPeriod.setBounds(180, 44, 208, 22);
 		contentPane.add(comboBoxPayPeriod);
 		
@@ -140,7 +141,7 @@ public class Payslip extends JFrame {
 					txtHdmfNo.setText("4410-9336-9646");
 					txtHourlyRate.setText("PHP " + allEmpRate[0] + "");
 					
-					txtBasicPayHrs.setText(hrsWkd.calculateWeeklyHoursWorked(1) + "");
+					txtBasicPayHrs.setText(hrsWkd.calculateWeeklyHoursWorked(1,1) + "");
 					txtBasicPay.setText("PHP " + (Math.round(weeklyPay[0] * 100.0) / 100.0) + "");
 					txtTotalTaxable.setText("PHP " + (Math.round(weeklyPay[0] * 100.0) / 100.0) + "");
 					
@@ -573,7 +574,54 @@ public class Payslip extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if (comboBoxPayPeriod.getSelectedItem().equals(payPeriod[1])) {
+				if (comboBoxPayPeriod.getSelectedItem().equals(payPeriod[1]) && !txtEmployeeName.getText().equals("")) {
+					
+					// I really didn't want to do it like this TTTT ^ TTTT
+					
+					try {
+					PrintWriter slipWriter = new PrintWriter("Payslip_Out.txt");
+					
+					slipWriter.println("--------- MotorPH ---------");
+					slipWriter.println("PAYROLL INFORMATION");
+					slipWriter.println("Employee Name: " + txtEmployeeName.getText());
+					slipWriter.println("Payroll Period: " + txtPayrollPeriod.getText());
+					slipWriter.println("Pay Date: " + txtPayDate.getText());
+					slipWriter.println(" ");
+					slipWriter.println("EMPLOYEE INFORMATION");
+					slipWriter.println("Employee No.: " + txtEmployeeNo.getText());
+				 	slipWriter.println("TIN: " + txtTIN.getText());
+				 	slipWriter.println("SSS No.: " + txtSssNo.getText());
+				 	slipWriter.println("PHIC No.: " + txtPhicNo.getText());
+				 	slipWriter.println("HDMF No.: " + txtHdmfNo.getText());
+				 	slipWriter.println("Position: " + txtPosition.getText());
+				 	slipWriter.println("Hourly Rate: PHP " + txtHourlyRate.getText());
+				 	slipWriter.println("Overtime Rate: PHP " + txtOvertimeRate.getText());
+				 	slipWriter.println("\nEARNINGS");
+				 	slipWriter.println("Taxable Earnings:");
+				 	slipWriter.println("\nBasic Pay - " + txtBasicPayHrs.getText() + " hr(s): PHP " + txtBasicPay.getText());
+				 	slipWriter.println("\nTOTAL TAXABLE PAY: PHP " + txtTotalTaxable.getText());
+				 		 	
+				 	slipWriter.println("\nNon-Taxable Earnings:");
+				 	slipWriter.println("Rice Subsidy: PHP " + txtRiceSubsidy.getText());
+				 	slipWriter.println("Clothing Allowance: PHP " + txtClothingAllowance.getText());
+				 	slipWriter.println("Phone Allowance: PHP " + txtPhoneSubsidy.getText());
+				 	slipWriter.println("TOTAL NON-TAXABLE PAY: PHP " + txtTotalNonTaxable.getText());
+				 	slipWriter.println("\nGROSS EARNINGS: PHP " + txtGrossEarnings.getText());
+				 	
+				 	slipWriter.println("\nDEDUCTIONS:");
+				 	slipWriter.println("SSS: PHP " + txtSss.getText());
+				 	slipWriter.println("PhilHealth: PHP " + txtPhilhealth.getText());
+				 	slipWriter.println("Pag-ibig: PHP " + txtPagibig.getText());
+				 	slipWriter.println("Withholding Tax: PHP " + txtWithholdingTax.getText());
+				 	slipWriter.println("TOTAL DEDUCTIONS: PHP " + txtTotalDeductions.getText());
+				 	slipWriter.println("\nNET EARNINGS: PHP " + txtNetEarnings.getText());
+        
+				    slipWriter.close();
+				      } catch (IOException f) {
+				        System.out.println("An error occurred.");
+				        f.printStackTrace();
+				      }	
+
 					JOptionPane.showMessageDialog(Payslip.this, "Printed to Payslip_Out.txt file.", "Success!", JOptionPane.INFORMATION_MESSAGE, null);
 				try {
 					Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + "Payslip_Out.txt");

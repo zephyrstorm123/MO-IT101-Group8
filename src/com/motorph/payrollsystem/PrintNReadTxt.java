@@ -11,7 +11,7 @@ public class PrintNReadTxt {
     private double[] allEmpRt = new double[2150];
     private double[] empHrsWkd = new double[4300];
     private double empDailyHrs;
-
+    
     public void printRead() {
         try {
             FileReader file = new FileReader("Daily Timesheet.txt");
@@ -39,21 +39,37 @@ public class PrintNReadTxt {
             inFile.close();
             outFile.close();
 
-            int j = 0, k = 0;
-
-            while (k < 430) {
-                weeklyPay[j] = dayPy[k] + dayPy[k + 25] + dayPy[k + 50] + dayPy[k + 75] + dayPy[k + 100];
-                j++;
-                k++;
+            int constant = 25;
+            int l = 0;
+            int o = 0;
+			int start = 0;
+            
+            for (int j = 0; j < 20; j++) {
+              for (int k = 0; k < 25; k++) {
+            	  double sum = 0;
+                for (int m = 0; m < 5; m++) {
+                  start = 50;
+                  start = constant * m + (125 * l) + start + k;
+                  if (start < 2150) {
+                  sum = sum + dayPy[start];
+                  } else {break;}
+                }
+                if (start < 2150) {
+                weeklyPay[o] = sum;
+                o++;
+                } else {break;}
+              }
+              l++;
             }
+
 
             FileReader file1 = new FileReader("HrsWkd.txt");
             Scanner inFile1 = new Scanner(file1);
 
             // Read till end of file
 
-            for (int l = 0; inFile1.hasNext(); l++) {
-                empHrsWkd[l] = inFile1.nextDouble();
+            for (int n = 0; inFile1.hasNext(); n++) {
+                empHrsWkd[n] = inFile1.nextDouble();
             }
             
 

@@ -21,8 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 public class UserLogin extends JFrame implements ActionListener{
-    private String empNo = "10001";
-    private String pass = "Admin1234";
+    private String[] empNo = {"10001","10002"};
+    private String[] pass = {"Admin1234","Empl1234"};
+    public static String user;
     public boolean loggedIn;
     Scanner scan = new Scanner(System.in);
     // Swing components
@@ -141,15 +142,13 @@ public class UserLogin extends JFrame implements ActionListener{
     }
 
     public void insertData() {
-        String empNo = txtEmployeeNumber.getText();
+        user = txtEmployeeNumber.getText();
         String pass = txtPassword.getText();
-        loggedIn = verifyLogin(empNo, pass);
-        
+        loggedIn = verifyLogin(user, pass);
         //Error panel
         
         
         if (loggedIn) {
-        	
         	// Hides the login window
         	setVisible(false);
         	dispose();
@@ -162,8 +161,6 @@ public class UserLogin extends JFrame implements ActionListener{
     	    	
     			panel_1.setVisible(true);
     			btnLogin.setBounds(167, 165, 100, 30);
-//    			setSize(450,260);
-//    			JOptionPane.showMessageDialog(this, "Invalid employee number or password.", "Invalid Input", JOptionPane.INFORMATION_MESSAGE);
     			txtEmployeeNumber.setBorder(new LineBorder(new Color(255, 0, 0)));
     			txtPassword.setBorder(new LineBorder(new Color(255, 0, 0)));
     		}
@@ -171,8 +168,14 @@ public class UserLogin extends JFrame implements ActionListener{
     }
 
     public boolean verifyLogin(String empNo, String pass) {
-    	return this.empNo.equals(empNo) && this.pass.equals(pass);
+        for (int i = 0; i < this.empNo.length; i++) {
+            if (this.empNo[i].equals(empNo) && this.pass[i].equals(pass)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -180,9 +183,11 @@ public class UserLogin extends JFrame implements ActionListener{
 		
 	}
 	
-	public String getEmployeeNo() {
-		return empNo;
+	public void setUser(String empNo) {
+		this.user = empNo;
 	}
     
-
+	public String getEmployeeNumber() {
+		return user;
+	}
 }

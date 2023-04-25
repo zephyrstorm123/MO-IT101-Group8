@@ -22,10 +22,12 @@ public class PayrollSystem extends JFrame {
 	private HoursWorked hoursWorked;
 	private PrintNReadTxt printNRead;
 	private Payslip payslip;
+	private UserLogin login;
+	private LeaveApplication leave;
 	// private variables for the Swing components
 	private JPanel mainPanel, profilePanel;
 	private JLabel lblMainMenu, lblProfileMenu;
-	private JButton btnEmployeeProfile, btnEmployeeMaster, btnLogout, btnPersonalInfo, btnSalaryInfo, btnDailyTimesheet, btnPayslip, btnBack;
+	private JButton btnEmployeeProfile, btnEmployeeMaster, btnLogout, btnPersonalInfo, btnSalaryInfo, btnDailyTimesheet, btnPayslip, btnLeave, btnBack;
 	Font font = new Font("Nexa Book", Font.BOLD, 15);
 	
 	
@@ -38,6 +40,8 @@ public class PayrollSystem extends JFrame {
 		hoursWorked = new HoursWorked();
 		printNRead = new PrintNReadTxt();
 		payslip = new Payslip();
+		leave = new LeaveApplication();
+		login = new UserLogin();
 		
 		// Swing components
 		// Initialize main panel
@@ -65,12 +69,15 @@ public class PayrollSystem extends JFrame {
 		
 		btnEmployeeMaster = new JButton("Employee Master");
 		btnEmployeeMaster.setBounds(150, 95, 150, 30);
+		btnEmployeeMaster.setEnabled(false);
 		btnEmployeeMaster.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(PayrollSystem.this, "This option is not yet available.", "Sorry!", JOptionPane.INFORMATION_MESSAGE, null);
-				
+				setVisible(false);
+	        	dispose();
+				EmployeeMaster records = new EmployeeMaster();
+				records.viewEmployeeMaster();				
 			}
 		});
 		
@@ -106,12 +113,14 @@ public class PayrollSystem extends JFrame {
 		btnDailyTimesheet = new JButton("Daily Timesheet");
 		btnPayslip = new JButton("Payslip");
 		btnBack = new JButton("Main Menu");
+		btnLeave = new JButton("Apply for Leave");
 		
 		btnPersonalInfo.setBounds(45, 55, 155, 30);
 		btnSalaryInfo.setBounds(245, 55, 155, 30);
 		btnDailyTimesheet.setBounds(45, 95, 155, 30);
 		btnPayslip.setBounds(245, 95, 155, 30);
-		btnBack.setBounds(170, 135, 100, 30);
+		btnBack.setBounds(245, 135, 155, 30);
+		btnLeave.setBounds(45, 135, 155, 30);
 		
 		btnPersonalInfo.addActionListener(new ActionListener() {
 			
@@ -119,7 +128,7 @@ public class PayrollSystem extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
-				employee.printPersonalInfo();
+				employee.displayPersonalInfo();
 				
 			}
 		});
@@ -130,7 +139,7 @@ public class PayrollSystem extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
-				employee.printSalaryRecords();
+				employee.displaySalaryRecords();
 				
 			}
 		});
@@ -156,7 +165,7 @@ public class PayrollSystem extends JFrame {
 				
 			}
 		});
-		
+	
 		btnBack.addActionListener(new ActionListener() {
 			
 			@Override
@@ -166,11 +175,23 @@ public class PayrollSystem extends JFrame {
 			}
 		});
 		
+		btnLeave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+				leave.applyLeave();
+				
+			}
+		});
+		
 		profilePanel.add(btnPersonalInfo);
 		profilePanel.add(btnSalaryInfo);
 		profilePanel.add(btnDailyTimesheet);
 		profilePanel.add(btnPayslip);
 		profilePanel.add(btnBack);
+		profilePanel.add(btnLeave);
 		
 		// Add main panel to the frame
 		getContentPane().add(mainPanel);
@@ -215,7 +236,10 @@ public class PayrollSystem extends JFrame {
     
     public void mainMenu() {
     	profilePanel.setVisible(false);
-    	printNRead.printRead();   	
+    	printNRead.printRead();
+    	if (login.user.equals("10001")) {
+    		btnEmployeeMaster.setEnabled(true);
+    	}
     	getContentPane().remove(profilePanel);
 //    	getContentPane().add(profilePanel);
     	setContentPane(mainPanel);

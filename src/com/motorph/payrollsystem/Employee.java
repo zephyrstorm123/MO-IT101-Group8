@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,7 +37,14 @@ public class Employee extends JFrame {
 	private JButton btnBack, btnSalaryBack;
 	private JPanel personalInfoPanel, salaryInfoPanel;
 	
+	private String path = "EmployeeDetails.csv", line = "";
+	protected EmployeeDetails[] employee = new EmployeeDetails[25];
+	private int employeeCount;
+	private UserLogin login;
+	private static int user, minus = 10001;
+	
 	public Employee() {
+		login = new UserLogin();
 		// Swing components
 		// Initialize panel for personal information
 		personalInfoPanel = new JPanel();
@@ -56,52 +67,52 @@ public class Employee extends JFrame {
 		txtEmployeeNo = new JTextField(20);
 		txtEmployeeNo.setEnabled(false);
 		txtEmployeeNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtEmployeeNo.setText("10001");
+		txtEmployeeNo.setText(login.user);
 		
 		txtLastName = new JTextField(20);
 		txtLastName.setEnabled(false);
 		txtLastName.setDisabledTextColor(new Color(128, 128, 128));
-		txtLastName.setText("Crisostomo");
+		
 		
 		txtFirstName = new JTextField(20);
 		txtFirstName.setEnabled(false);
 		txtFirstName.setDisabledTextColor(new Color(128, 128, 128));
-		txtFirstName.setText("Jose");
+		
 		
 		txtBirthday = new JTextField(20);
 		txtBirthday.setEnabled(false);
 		txtBirthday.setDisabledTextColor(new Color(128, 128, 128));
-		txtBirthday.setText("February 14, 1988");
+		
 		
 		txtAddress = new JTextField(20);
 		txtAddress.setEnabled(false);
 		txtAddress.setDisabledTextColor(new Color(128, 128, 128));
-		txtAddress.setText("17/85 Stracke Via");
+		
 		
 		txtPhoneNo = new JTextField(20);
 		txtPhoneNo.setEnabled(false);
 		txtPhoneNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtPhoneNo.setText("918-621-603");
+		
 		
 		txtSssNo = new JTextField(20);
 		txtSssNo.setEnabled(false);
 		txtSssNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtSssNo.setText("49-1632020-8");
+		
 		
 		txtPhic = new JTextField(20);
 		txtPhic.setEnabled(false);
 		txtPhic.setDisabledTextColor(new Color(128, 128, 128));
-		txtPhic.setText("38-218945314-5");
+		
 		
 		txtTinNo = new JTextField(20);
 		txtTinNo.setEnabled(false);
 		txtTinNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtTinNo.setText("317-674-022-000");
+		
 		
 		txtHdmfNo = new JTextField(20);
 		txtHdmfNo.setEnabled(false);
 		txtHdmfNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtHdmfNo.setText("4410-9336-9646");
+		
 		
 		btnBack = new JButton("Back");
 		btnBack.setBounds(265, 260, 80, 30);
@@ -179,42 +190,42 @@ public class Employee extends JFrame {
 		txtSalEmployeeNo = new JTextField(20);
 		txtSalEmployeeNo.setEnabled(false);
 		txtSalEmployeeNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtSalEmployeeNo.setText("10001");
+		
 		
 		txtEmployeeStats = new JTextField(20);
 		txtEmployeeStats.setEnabled(false);
 		txtEmployeeStats.setDisabledTextColor(new Color(128, 128, 128));
-		txtEmployeeStats.setText("Regular");
+		
 		
 		txtEmployeePosition	= new JTextField(20);
 		txtEmployeePosition.setEnabled(false);
 		txtEmployeePosition.setDisabledTextColor(new Color(128, 128, 128));
-		txtEmployeePosition.setText("HR Manager");
 		
+		 
 		txtSalaryClass = new JTextField(20);
 		txtSalaryClass.setEnabled(false);
 		txtSalaryClass.setDisabledTextColor(new Color(128, 128, 128));
-		txtSalaryClass.setText("Rank and File");
+		
 		
 		txtBasicSalary = new JTextField(20);
 		txtBasicSalary.setEnabled(false);
 		txtBasicSalary.setDisabledTextColor(new Color(128, 128, 128));
-		txtBasicSalary.setText("PHP 62, 670.00");
+		
 		
 		txtRiceSubsidy = new JTextField(20);
 		txtRiceSubsidy.setEnabled(false);
 		txtRiceSubsidy.setDisabledTextColor(new Color(128, 128, 128));
-		txtRiceSubsidy.setText("PHP 1,500.00");
+		
 		
 		txtPhoneAllowance = new JTextField(20);
 		txtPhoneAllowance.setEnabled(false);
 		txtPhoneAllowance.setDisabledTextColor(new Color(128, 128, 128));
-		txtPhoneAllowance.setText("PHP 1,000.00");
+		
 		
 		txtClothingAllowance = new JTextField(20);
 		txtClothingAllowance.setEnabled(false);
 		txtClothingAllowance.setDisabledTextColor(new Color(128, 128, 128));
-		txtClothingAllowance.setText("PHP 1,000.00");
+		
 		
 		btnSalaryBack = new JButton("Back");
 		btnSalaryBack.setBounds(265, 260, 80, 30);
@@ -294,10 +305,58 @@ public class Employee extends JFrame {
 		
 	}
 	
-	public void printPersonalInfo() {
-//		salaryInfoPanel.setVisible(false); 	
-//    	getContentPane().remove(salaryInfoPanel);
-//    	getContentPane().add(profilePanel);
+	public void readCsvFile() {
+		//Read from EmployeeDetails.csv
+		if (login.user != null) {
+		user = Integer.parseInt(login.user);
+		}
+			employeeCount = 0;
+		try {
+	        BufferedReader br = new BufferedReader(new FileReader(path));
+	        int i = 0;
+
+	        while ((line = br.readLine()) != null) {
+
+	            String[] values = line.split(",");
+	            
+	         // check if any value is empty or null
+	            boolean hasEmptyValue = false;
+	            for (String value : values) {
+	                if (value == null || value.isEmpty()) {
+	                    hasEmptyValue = true;
+	                    break;
+	                }
+	            }
+
+	            	if (hasEmptyValue) {
+	                // skip this line
+	                continue;
+	            }
+	            employeeCount++;
+	            employee[i] = new EmployeeDetails(values[0], values[1], values[2], values[3], values[4], values[5],
+	                    values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13],
+	                    values[14], values[15], values[16], values[17], values[18]);
+	            
+	            i++;
+	        }
+	        br.close();
+		} catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+	public void displayPersonalInfo() {
+		readCsvFile();
+		txtLastName.setText(employee[user - minus].lname);
+		txtFirstName.setText(employee[user - minus].fname);
+		txtBirthday.setText(employee[user - minus].bday);
+		txtAddress.setText(employee[user - minus].address);
+		txtPhoneNo.setText(employee[user - minus].phoneNumber);
+		txtSssNo.setText(employee[user - minus].sssNumber);
+		txtPhic.setText(employee[user - minus].philHealthNumber);
+		txtTinNo.setText(employee[user - minus].tinNumber);
+		txtHdmfNo.setText(employee[user - minus].pagIbigNumber);
     	setContentPane(personalInfoPanel);
     	setVisible(true);
     	// Repaint the frame
@@ -306,27 +365,21 @@ public class Employee extends JFrame {
 		
 	}
 	
-	public void printSalaryRecords() {
-		
+	public void displaySalaryRecords() {
+		readCsvFile();
+		txtSalEmployeeNo.setText(user + "");
+		txtEmployeeStats.setText(employee[user - minus].status);
+		txtEmployeePosition.setText(employee[user - minus].position);
+		txtSalaryClass.setText(employee[user - minus].basicSalary);
+		txtBasicSalary.setText("PHP " + employee[user - minus].basicSalary + ".00");
+		txtRiceSubsidy.setText("PHP " + employee[user - minus].riceSubsidy + ".00");
+		txtPhoneAllowance.setText("PHP " + employee[user - minus].phoneAllowance + ".00");
+		txtClothingAllowance.setText("PHP " + employee[user - minus].clothingAllowance + ".00");
 		setContentPane(salaryInfoPanel);
     	setVisible(true);
     	// Repaint the frame
         revalidate();
         repaint();
-		
-		
-		/*
-		System.out.println("Salary Information:");
-		
-		for (int i = 0; i < 50; i++) {
-			System.out.print("=");}
-		
-		System.out.println();
-		System.out.println(employeeSalary);
-		
-		for (int i = 0; i < 50; i++) {
-			System.out.print("=");}
-			*/
 	}
 	
 	public void callProfileMenu() {

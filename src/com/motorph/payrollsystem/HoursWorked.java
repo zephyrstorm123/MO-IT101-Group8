@@ -101,7 +101,7 @@ public class HoursWorked extends JFrame {
 		lblEnterPayPeriod.setBounds(59, 52, 115, 14);
 		contentPane.add(lblEnterPayPeriod);
 		
-		JComboBox<String> comboBoxPayPeriod = new JComboBox<String>(payPeriod);
+		JComboBox comboBoxPayPeriod = new JComboBox(payPeriod);
 		comboBoxPayPeriod.setBounds(174, 48, 193, 20);
 		
 		contentPane.add(comboBoxPayPeriod);
@@ -141,7 +141,7 @@ public class HoursWorked extends JFrame {
 				txtThursdayHrs.setText(empHrs4);
 				txtFridayHrs.setText(empHrs5);
 				
-				String empHrsTtl1 = calculateWeeklyHoursWorked(1) + "";
+				String empHrsTtl1 = calculateWeeklyHoursWorked(1,1) + "";
 				txtTotalHoursWorked.setText(empHrsTtl1);
 				
 				}
@@ -166,7 +166,7 @@ public class HoursWorked extends JFrame {
 					txtThursdayHrs.setText(empHrs9);
 					txtFridayHrs.setText(empHrs10);
 					
-					String empHrsTtl1 = calculateWeeklyHoursWorked(2) + "";
+					String empHrsTtl1 = calculateWeeklyHoursWorked(2,1) + "";
 					txtTotalHoursWorked.setText(empHrsTtl1);
 
 					
@@ -192,7 +192,7 @@ public class HoursWorked extends JFrame {
 					txtThursdayHrs.setText(empHrs14);
 					txtFridayHrs.setText(empHrs15);
 					
-					String empHrsTtl1 = calculateWeeklyHoursWorked(3) + "";
+					String empHrsTtl1 = calculateWeeklyHoursWorked(3,1) + "";
 					txtTotalHoursWorked.setText(empHrsTtl1);
 					
 				}
@@ -419,13 +419,14 @@ public class HoursWorked extends JFrame {
 
 	}
 	
-	public double calculateWeeklyHoursWorked(int week) {
+	public double calculateWeeklyHoursWorked(int week, int employee) {
     	printNRead.printRead();
 		double[] empHrsWkd = printNRead.getEmpHrsWkd();
 		
         double sum = 0;
-			for (int i = 0; i < 5; i++) {
-				sum += empHrsWkd[i * 25 + (((week - 1) * 125) + 50)];
+			for (int i = 1; i <= 5; i++) {
+				sum += empHrsWkd[i * 25 + (((week - 1) * 125) + 25) + (employee - 1)];
+//				System.out.println(i * 25 + (((week - 1) * 125) + 25) + (employee - 1));
 			}
         return sum;
     }
