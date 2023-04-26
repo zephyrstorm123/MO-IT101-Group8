@@ -7,8 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,13 +34,22 @@ public class Payslip extends JFrame {
 	txtTotalDeductions, txtNetEarnings, txtGrossEarnings, txtBasicPayHrs;
 	
 	protected String[] payPeriod = {"======= Pay Period =======",
-								  "1st Week September 2022"}; // For JComboBox use
+								  "1st Week September 2022",
+								  "2nd Week September 2022",
+								  "3rd Week September 2022"}; // For JComboBox use
+	private String[] payDate = {"September 10, 2022",
+								"September 17, 2022",
+								"September 24, 2022"};
 	private HoursWorked hrsWkd;
 	
 	private PrintNReadTxt printRead;
+	private UserLogin login;
 	protected double[] allEmpRate, weeklyPay;
 	protected double rice = 1500.0 / 4, phone = 1000.0 / 4, clothes = 1000.0 / 4;
-
+	private static int user;
+	private int p, index;
+	DecimalFormat df;
+//	private LeaveDetails[] leave;
 	/**
 	 * Launch the application.
 	 */
@@ -76,9 +87,15 @@ public class Payslip extends JFrame {
 	public Payslip() {
 		hrsWkd = new HoursWorked();
 		printRead = new PrintNReadTxt();
+		login = new UserLogin();
 		printRead.printRead();
 		allEmpRate = printRead.getAllEmpRate();
 		weeklyPay = printRead.getWeeklyPay();
+//		employee = printRead.employee; 
+		if (UserLogin.user != null) {
+			user = Integer.parseInt(UserLogin.user) - 10001;
+			}
+		df = new DecimalFormat("###,###.00");
 		
 		setResizable(false);
 		setTitle("MotorPH Payroll System");
@@ -125,54 +142,11 @@ public class Payslip extends JFrame {
 				if (comboBoxPayPeriod.getSelectedItem().equals(payPeriod[0])) {
 					
 					JOptionPane.showMessageDialog(Payslip.this, "       Please select pay period.", "Invalid Input", JOptionPane.INFORMATION_MESSAGE, null);
-				}
-				
-				if (comboBoxPayPeriod.getSelectedItem().equals(payPeriod[1])) {
-					txtEmployeeName.setText("Jose Crisostomo");
-					txtPayrollPeriod.setText(payPeriod[1]);
-					txtEmployeeNo.setText("10001");
-					txtPayDate.setText("September 10, 2022");
-					
-					txtTIN.setText("317-674-022-000");
-					txtPhicNo.setText("38-218945314-5");
-					txtPosition.setText("HR Manager");
-					txtOvertimeRate.setText("PHP " + (Math.round((allEmpRate[0] * 1.5) * 100.0) / 100.0) + "");
-					txtSssNo.setText("49-1632020-8");
-					txtHdmfNo.setText("4410-9336-9646");
-					txtHourlyRate.setText("PHP " + allEmpRate[0] + "");
-					
-					txtBasicPayHrs.setText(hrsWkd.calculateWeeklyHoursWorked(1,1) + "");
-					txtBasicPay.setText("PHP " + (Math.round(weeklyPay[0] * 100.0) / 100.0) + "");
-					txtTotalTaxable.setText("PHP " + (Math.round(weeklyPay[0] * 100.0) / 100.0) + "");
-					
-					txtRiceSubsidy.setText("PHP " + (Math.round(rice * 100.0) / 100.0) + "");
-					txtPhoneSubsidy.setText("PHP " + (Math.round(phone * 100.0) / 100.0) + "");
-					txtClothingAllowance.setText("PHP " + (Math.round(clothes * 100.0) / 100.0) + "");
-					txtTotalNonTaxable.setText("PHP " + (Math.round((rice + phone + clothes) * 100.0) / 100.0));
-					txtGrossEarnings.setText("PHP " + (Math.round((weeklyPay[0] + (rice + phone + clothes)) * 100.0) / 100.0));
-					
-					double sss = CalculateSSS.SSS(weeklyPay[0]), pagibig = CalculatePagIbig.PagIbig(weeklyPay[0]), philhealth = CalculatePhilhealth.Philhealth(weeklyPay[0]),
-							withholding = CalculateWitholdingTax.WitholdingTax(weeklyPay[0],
-									   CalculatePhilhealth.Philhealth(weeklyPay[0]),
-									   CalculatePagIbig.PagIbig(weeklyPay[0]),
-									   CalculateSSS.SSS(weeklyPay[0]));
-					
-					
-					txtSss.setText("PHP " + (Math.round(CalculateSSS.SSS(weeklyPay[0])* 100.0) / 100.0));
-					txtPagibig.setText("PHP " + (Math.round(CalculatePagIbig.PagIbig(weeklyPay[0])* 100.0) / 100.0));
-					txtPhilhealth.setText("PHP " + (Math.round(CalculatePhilhealth.Philhealth(weeklyPay[0])* 100.0) / 100.0));
-					txtWithholdingTax.setText("PHP " + (Math.round(CalculateWitholdingTax.WitholdingTax(weeklyPay[0],
-							  									   CalculatePhilhealth.Philhealth(weeklyPay[0]),
-																   CalculatePagIbig.PagIbig(weeklyPay[0]),
-							  									   CalculateSSS.SSS(weeklyPay[0])) * 100.0) / 100.0));
-					
-					txtTotalDeductions.setText("PHP " + (Math.round(CalculateSSS.SSS(weeklyPay[0]) + CalculatePhilhealth.Philhealth(weeklyPay[0]) + 
-														 CalculatePagIbig.PagIbig(weeklyPay[0]) + CalculateWitholdingTax.WitholdingTax(weeklyPay[0],
-							  									   CalculatePhilhealth.Philhealth(weeklyPay[0]),
-																   CalculatePagIbig.PagIbig(weeklyPay[0]),
-							  									   CalculateSSS.SSS(weeklyPay[0]))) * 100.0) / 100.0);
-					txtNetEarnings.setText("PHP " + (Math.round(weeklyPay[0] + (rice + phone + clothes) - (sss + pagibig + philhealth + withholding)) * 100.0) / 100.0);
-				}
+					return;
+				}				
+					p = comboBoxPayPeriod.getSelectedIndex();
+					index = (p - 1) * 25;
+					displayText();			
 			}
 		});
 		contentPane.add(btnSubmit);
@@ -574,12 +548,12 @@ public class Payslip extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if (comboBoxPayPeriod.getSelectedItem().equals(payPeriod[1]) && !txtEmployeeName.getText().equals("")) {
+				if (!comboBoxPayPeriod.getSelectedItem().equals(payPeriod[0]) && !txtEmployeeName.getText().equals("")) {
 					
 					// I really didn't want to do it like this TTTT ^ TTTT
 					
 					try {
-					PrintWriter slipWriter = new PrintWriter("Payslip_Out.txt");
+					PrintWriter slipWriter = new PrintWriter("texts/Payslip_Out.txt");
 					
 					slipWriter.println("--------- MotorPH ---------");
 					slipWriter.println("PAYROLL INFORMATION");
@@ -623,8 +597,9 @@ public class Payslip extends JFrame {
 				      }	
 
 					JOptionPane.showMessageDialog(Payslip.this, "Printed to Payslip_Out.txt file.", "Success!", JOptionPane.INFORMATION_MESSAGE, null);
+					String filePath = "texts" + File.separator + "Payslip_Out.txt";
 				try {
-					Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + "Payslip_Out.txt");
+					Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + filePath);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					}
@@ -635,7 +610,53 @@ public class Payslip extends JFrame {
 		});
 		contentPane.add(btnPrint);
 		
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(null);	
+	}
+	
+	public void displayText() {
+		txtEmployeeName.setText(PrintNReadTxt.employee[user].fname + " " + PrintNReadTxt.employee[user].lname);
+		txtPayrollPeriod.setText(payPeriod[p]);
+		txtEmployeeNo.setText(login.user + "");
+		txtPayDate.setText(payDate[p-1]);
 		
+		txtTIN.setText(printRead.employee[user].tinNumber);
+		txtPhicNo.setText(printRead.employee[user].philHealthNumber);
+		txtPosition.setText(printRead.employee[user].position);
+		txtOvertimeRate.setText("PHP " + (Math.round((allEmpRate[user] * 1.5) * 100.0) / 100.0) + "");
+		txtSssNo.setText(printRead.employee[user].sssNumber);
+		txtHdmfNo.setText(printRead.employee[user].pagIbigNumber);
+		txtHourlyRate.setText("PHP " + allEmpRate[user] + "");
+		
+		txtBasicPayHrs.setText(hrsWkd.calculateWeeklyHoursWorked(1 + p,1 + user) + "");
+		txtBasicPay.setText("PHP " + df.format(weeklyPay[user + index]));
+		txtTotalTaxable.setText("PHP " +  df.format(weeklyPay[user + index]));
+		
+		txtRiceSubsidy.setText("PHP " +  df.format(rice));
+		txtPhoneSubsidy.setText("PHP " + df.format(phone));
+		txtClothingAllowance.setText("PHP " + df.format(clothes));
+		txtTotalNonTaxable.setText("PHP " + df.format((rice + phone + clothes)));
+		txtGrossEarnings.setText("PHP " + df.format(weeklyPay[user + index] + (rice + phone + clothes)));
+		
+		double sss = CalculateSSS.SSS(weeklyPay[user + index]), pagibig = CalculatePagIbig.PagIbig(weeklyPay[user + index]), philhealth = CalculatePhilhealth.Philhealth(weeklyPay[user + index]),
+				withholding = CalculateWitholdingTax.WitholdingTax(weeklyPay[user + index],
+						   CalculatePhilhealth.Philhealth(weeklyPay[user + index]),
+						   CalculatePagIbig.PagIbig(weeklyPay[user + index]),
+						   CalculateSSS.SSS(weeklyPay[user + index]));
+		
+		
+		txtSss.setText("PHP " + df.format(CalculateSSS.SSS(weeklyPay[user + index])));
+		txtPagibig.setText("PHP " + df.format(CalculatePagIbig.PagIbig(weeklyPay[user + index])));
+		txtPhilhealth.setText("PHP " + df.format(CalculatePhilhealth.Philhealth(weeklyPay[user + index])));
+		txtWithholdingTax.setText("PHP " + df.format(CalculateWitholdingTax.WitholdingTax(weeklyPay[user + index],
+				  									   CalculatePhilhealth.Philhealth(weeklyPay[user + index]),
+													   CalculatePagIbig.PagIbig(weeklyPay[user + index]),
+				  									   CalculateSSS.SSS(weeklyPay[user + index]))));
+		
+		txtTotalDeductions.setText("PHP " + df.format(CalculateSSS.SSS(weeklyPay[user + index]) + CalculatePhilhealth.Philhealth(weeklyPay[user + index]) + 
+											 CalculatePagIbig.PagIbig(weeklyPay[user + index]) + CalculateWitholdingTax.WitholdingTax(weeklyPay[user + index],
+				  									   CalculatePhilhealth.Philhealth(weeklyPay[user + index]),
+													   CalculatePagIbig.PagIbig(weeklyPay[user + index]),
+				  									   CalculateSSS.SSS(weeklyPay[user + index]))));
+		txtNetEarnings.setText("PHP " + df.format(weeklyPay[user + index] + (rice + phone + clothes) - (sss + pagibig + philhealth + withholding)));
 	}
 }

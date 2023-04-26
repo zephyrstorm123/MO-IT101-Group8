@@ -104,7 +104,7 @@ public class EmployeeDetailsViewer extends EmployeeMaster {
 		allEmpRate = printRead.getAllEmpRate();
 		weeklyPay = printRead.getWeeklyPay();
 		empHrsWkd = printRead.getEmpHrsWkd();
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("###,###.00");
 		
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -304,16 +304,8 @@ public class EmployeeDetailsViewer extends EmployeeMaster {
 		
 		
 		comboBoxStatus.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Regular", "Probationary"}));
+		comboBoxStatus.setModel(new DefaultComboBoxModel<Object>(new String[] {"Regular", "Probationary"}));
 		comboBoxStatus.setBounds(56, 27, 88, 20);
-//		comboBoxStatus.setEditable(true);
-//		ComboBoxEditor editor = comboBoxStatus.getEditor();
-//		JTextField     etf    = (JTextField)editor.getEditorComponent();
-//		etf.setDisabledTextColor(UIManager.getColor("ComboBox.foreground"));
-//		etf.setBackground(UIManager.getColor("ComboBox.background"));
-//		comboBoxStatus.setEditable(false);
-//		
-//		UIManager.put( "ComboBox.disabledBackground", new Color(212,212,210) );
 		UIManager.put( "ComboBox.disabledForeground", Color.GRAY );
 		
 		payrollInformationPanel_1_1.add(comboBoxStatus);

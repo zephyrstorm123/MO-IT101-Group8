@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
@@ -20,29 +21,38 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTabbedPane;
 
 public class EmployeeMaster extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-	String path = "EmployeeDetails.csv", line = "";
+	String path = "csv/EmployeeDetails.csv", line = "";
 	protected EmployeeDetails[] employee = new EmployeeDetails[25];
 	
 	private String newFname, newLname, newBday, newAddress, newPhoneNumber, newStatus, newPosition, newSupervisor;
 	private int employeeCount;
+	private JTable table_1;
+	
+	private LeaveDetails[] leave = new LeaveDetails[50];
+	private int SlCount, VlCount, ElCount, leaveCount, count;
+	private Object[][] data;
+	private String pathAL = "csv/AppliedLeaves.csv";
+	private JButton btnApprove, btnReject;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EmployeeMaster frame = new EmployeeMaster();
-		frame.viewEmployeeMaster();
-		
-	}
+//	public static void main(String[] args) {
+//		EmployeeMaster frame = new EmployeeMaster();
+//		frame.viewEmployeeMaster();
+//		
+//	}
 	
 	public void viewEmployeeMaster() {
 		EventQueue.invokeLater(new Runnable() {
@@ -50,6 +60,7 @@ public class EmployeeMaster extends JFrame {
 				try {
 					EmployeeMaster frame = new EmployeeMaster();
 					frame.readCsvFile();
+					frame.loadLeaveApplications();
 //					frame.updateCsv();
 					frame.setVisible(true);
 					
@@ -133,34 +144,17 @@ public class EmployeeMaster extends JFrame {
 	 * Create the frame.
 	 */
 	public EmployeeMaster() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(789,373);
+		setSize(789,423);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		// Sets icon image for the application
     	ImageIcon icon = new ImageIcon("MOTORPH.png");
     	setIconImage(icon.getImage());
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setFont(new Font("Tahoma", Font.BOLD, 11));
-		scrollPane.setBounds(10, 61, 753, 204);
-		getContentPane().add(scrollPane);
-		
-		table = new JTable();
-		table.setDefaultEditor(Object.class, null);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane.setViewportView(table);
-
-		
-		
-		
-		JLabel lblMotorphEmployeeMaster = new JLabel("MotorPH Employee Master");
-		lblMotorphEmployeeMaster.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblMotorphEmployeeMaster.setBounds(285, 27, 184, 17);
-		getContentPane().add(lblMotorphEmployeeMaster);
-		
 		JButton btnBack = new JButton("Exit");
-		btnBack.setBounds(687, 286, 64, 23);
+		btnBack.setBounds(687, 350, 64, 23);
 		btnBack.addActionListener(new ActionListener() {
 			
 			@Override
@@ -174,80 +168,213 @@ public class EmployeeMaster extends JFrame {
 		});
 		getContentPane().add(btnBack);
 		
-		JButton btnView = new JButton("View >>");
-		btnView.setEnabled(false);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(10, 61, 753, 278);
+		getContentPane().add(tabbedPane);
 		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setEnabled(false);
-		btnDelete.setBounds(108, 286, 82, 23);
-		
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent event) {
-		        int selectedRow = table.getSelectedRow();
-		        if (selectedRow != -1) { // If a row is selected
-		        	btnView.setEnabled(true);
-		        	btnDelete.setEnabled(true);
-		        } else {
-		        	btnView.setEnabled(false);
-		        	btnDelete.setEnabled(false);
-		        }
-		    }
-		});
-		
-		btnView.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int i = table.getSelectedRow();
-				if (i >= 0) {
-					EmployeeDetailsViewer view = new EmployeeDetailsViewer();
-					view.setSelection(table.getSelectedRow());
-					view.viewDetails();
-					setVisible(false);
-					dispose();
-				} else {
-					JOptionPane.showMessageDialog(EmployeeMaster.this, "View Error");
-				}
-			}
-		});
-		btnView.setBounds(20, 286, 82, 23);
-		getContentPane().add(btnView);
-		getContentPane().add(btnDelete);
-		
-		btnDelete.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int i = table.getSelectedRow();
-				if (i > 0) {
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("Employee Records", null, panel, null);
+		panel.setLayout(null);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(10, 39, 728, 166);
+				panel.add(scrollPane);
+				scrollPane.setFont(new Font("Tahoma", Font.BOLD, 11));
+				
+				table = new JTable();
+				table.setDefaultEditor(Object.class, null);
+				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				scrollPane.setViewportView(table);
+				
+				JButton btnView = new JButton("View >>");
+				btnView.setBounds(20, 216, 82, 23);
+				panel.add(btnView);
+				btnView.setEnabled(false);
+				
+				JButton btnDelete = new JButton("Delete");
+				btnDelete.setBounds(108, 216, 82, 23);
+				panel.add(btnDelete);
+				btnDelete.setEnabled(false);
+				
+				JPanel panel_1 = new JPanel();
+				tabbedPane.addTab("Employee Leave", null, panel_1, null);
+				panel_1.setLayout(null);
+				
+				JScrollPane scrollPane_1 = new JScrollPane();
+				scrollPane_1.setBounds(10, 39, 728, 166);
+				panel_1.add(scrollPane_1);
+				
+				btnApprove = new JButton("Approve");
+				btnApprove.setEnabled(false);
+				btnApprove.setBounds(20, 216, 82, 23);
+				btnApprove.addActionListener(new ActionListener() {
 					
-					int confirm = JOptionPane.showConfirmDialog(null, "Delete " + employee[i].fname + "'s Employee Record?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int selectedRow = table_1.getSelectedRow();
+						if (selectedRow == -1) {
+							return;
+						}
+						int confirm = JOptionPane.showConfirmDialog(null, "Approve this leave application?", "Confirm Approval", JOptionPane.YES_NO_OPTION);
+						
+						if (confirm != JOptionPane.YES_OPTION) {
+							return;
+						}
+						
+						leave[(leaveCount - 1) - selectedRow].leaveStatus = "Approved";
+						
+						// Update CSV
+						try (PrintWriter writer = new PrintWriter("csv/AppliedLeaves.csv")) {
+							for (int i = 0; i < leaveCount; i++) {
+								writer.write(leave[i].employeeNumber + "," + leave[i].leaveType + "," +
+											 leave[i].startDate + "," + leave[i].endDate + "," + 
+											 leave[i].leaveStatus + "," + leave[i].leaveDescription + "\n");
+								
+							}
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						loadLeaveApplications();
+					}
+				});
+				panel_1.add(btnApprove);
+				
+				btnReject = new JButton("Reject");
+				btnReject.setEnabled(false);
+				btnReject.setBounds(108, 216, 82, 23);
+				btnReject.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int selectedRow = table_1.getSelectedRow();
+						if (selectedRow == -1) {
+							return;
+						}
+						int confirm = JOptionPane.showConfirmDialog(null, "Reject this leave application?", "Confirm Rejection", JOptionPane.YES_NO_OPTION);
+						
+						if (confirm != JOptionPane.YES_OPTION) {
+							return;
+						}
+						
+						leave[(leaveCount - 1) - selectedRow].leaveStatus = "Rejected";
+						
+						// Update CSV
+						try (PrintWriter writer = new PrintWriter("csv/AppliedLeaves.csv")) {
+							for (int i = 0; i < leaveCount; i++) {
+								writer.write(leave[i].employeeNumber + "," + leave[i].leaveType + "," +
+											 leave[i].startDate + "," + leave[i].endDate + "," + 
+											 leave[i].leaveStatus + "," + leave[i].leaveDescription + "\n");
+								
+							}
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						loadLeaveApplications();
+						
+					}
+				});
+				panel_1.add(btnReject);
+				
+				table_1 = new JTable();
+				table_1.setDefaultEditor(Object.class, null);
+				table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				table_1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				    public void valueChanged(ListSelectionEvent event) {
+				        int selectedRow = table_1.getSelectedRow();
+				        if (selectedRow != -1) { // If a row is selected
+				            String leaveStatus = (String) table_1.getValueAt(selectedRow, 4);
+				            String employeeNumber = (String) table_1.getValueAt(selectedRow, 0);
+				            if (leaveStatus.equals("Applied")) {
+				            	if (!UserLogin.user.equals(employeeNumber)) {
+				                btnApprove.setEnabled(true);
+				                btnReject.setEnabled(true);
+				                } else {
+				                	btnApprove.setEnabled(false);
+					                btnReject.setEnabled(false);
+				                }
+				            } else {
+				                btnApprove.setEnabled(false);
+				                btnReject.setEnabled(false);
+				            }
+				            
+				        } else {
+				            
+				        }
+				    }
+				});
+				scrollPane_1.setViewportView(table_1);		
+						
+						JLabel lblMotorphEmployeeMaster = new JLabel("MotorPH Employee Master");
+						lblMotorphEmployeeMaster.setBounds(294, 33, 184, 17);
+						getContentPane().add(lblMotorphEmployeeMaster);
+						lblMotorphEmployeeMaster.setFont(new Font("Tahoma", Font.BOLD, 14));
+				
+				btnDelete.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int i = table.getSelectedRow();
+						if (i > 0) {
+							
+							int confirm = JOptionPane.showConfirmDialog(null, "Delete " + employee[i].fname + "'s Employee Record?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 	    	        if (confirm == JOptionPane.YES_OPTION) {
 	    	            // Save changes to CSV file
-					newFname = "";
-					newLname = "";
-					newBday = "";
-					newAddress = "";
-					newPhoneNumber = "";
-					newStatus = "";
-					newPosition = "";
-					newSupervisor = "";
-					
-					employeeCount--;
-					updateCsv(i);
-					DefaultTableModel model = (DefaultTableModel) table.getModel();
-					int[] selectedRows = table.getSelectedRows();
-					for (i = selectedRows.length - 1; i >= 0; i--) {
-					    model.removeRow(selectedRows[i]);
-					}
-					readCsvFile();
+							newFname = "";
+							newLname = "";
+							newBday = "";
+							newAddress = "";
+							newPhoneNumber = "";
+							newStatus = "";
+							newPosition = "";
+							newSupervisor = "";
+							
+							employeeCount--;
+							updateCsv(i);
+							DefaultTableModel model = (DefaultTableModel) table.getModel();
+							int[] selectedRows = table.getSelectedRows();
+							for (i = selectedRows.length - 1; i >= 0; i--) {
+							    model.removeRow(selectedRows[i]);
+							}
+							readCsvFile();
 	    	        }
-				} else if (i == 0) {
-					System.out.println();
-					JOptionPane.showMessageDialog(EmployeeMaster.this, "You don't have permission to delete this employee's records.", "Permission Error", JOptionPane.WARNING_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(EmployeeMaster.this, "Delete Error");
-				}
-			}
-		});
+						} else if (i == 0) {
+							System.out.println();
+							JOptionPane.showMessageDialog(EmployeeMaster.this, "You don't have permission to delete this employee's records.", "Permission Error", JOptionPane.WARNING_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(EmployeeMaster.this, "Delete Error");
+						}
+					}
+				});
+				
+				btnView.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int i = table.getSelectedRow();
+						if (i >= 0) {
+							EmployeeDetailsViewer view = new EmployeeDetailsViewer();
+							view.setSelection(table.getSelectedRow());
+							view.viewDetails();
+							setVisible(false);
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(EmployeeMaster.this, "View Error");
+						}
+					}
+				});
+				
+				table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				    public void valueChanged(ListSelectionEvent event) {
+				        int selectedRow = table.getSelectedRow();
+				        if (selectedRow != -1) { // If a row is selected
+				        	btnView.setEnabled(true);
+				        	btnDelete.setEnabled(true);
+				        } else {
+				        	btnView.setEnabled(false);
+				        	btnDelete.setEnabled(false);
+				        }
+				    }
+				});
 	}
 	
 	public void updateCsv(int employeeNo) {
@@ -261,7 +388,7 @@ public class EmployeeMaster extends JFrame {
 		employee[employeeNo].immediateSupervisor = newSupervisor;
 		
 		try {
-		PrintWriter outFile = new PrintWriter("EmployeeDetails.csv");
+		PrintWriter outFile = new PrintWriter("csv/EmployeeDetails.csv");
 			for (int i = 0; i < employee.length; i++) {
 				if (employee[i] != null) {
 				outFile.print(employee[i].employeeNumber + ",");
@@ -302,4 +429,79 @@ public class EmployeeMaster extends JFrame {
 		this.newPosition = position;
 		this.newSupervisor = immediateSupervisor;
 	}
+	
+	public void loadLeaveApplications() {
+		count = 0;
+		leaveCount = 0;
+		
+		int i = 0;
+		try {
+	        BufferedReader br = new BufferedReader(new FileReader(pathAL));
+	        while ((line = br.readLine()) != null) {
+
+	            String[] values = line.split(",");
+	            
+	         // check if any value is empty or null
+	            boolean hasEmptyValue = false;
+	            for (String value : values) {
+	                if (value == null || value.isEmpty()) {
+	                    hasEmptyValue = true;
+	                    break;}
+	            }
+	            	if (hasEmptyValue) {
+	                // skip this line
+	                continue;
+	            }
+	            leave[i] = new LeaveDetails(values[0], values[1], values[2], values[3], values[4], values[5]);
+	            count++;
+	            i++;
+	        }
+	        br.close();
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+			e.printStackTrace();
+		}
+ 
+	        for (int k = 0; k < leave.length; k++) {
+	        	if (leave[k] != null) {
+	        		leaveCount++;
+	        		if (leave[k].leaveType.equals("Sick Leave") && !leave[k].leaveStatus.equals("Cancelled")) {
+	        			SlCount++;
+	        		} else if (leave[k].leaveType.equals("Vacation Leave") && !leave[k].leaveStatus.equals("Cancelled")) {
+	        			VlCount++;
+	        		} else if (leave[k].leaveType.equals("Emergency Leave") && !leave[k].leaveStatus.equals("Cancelled")) {
+	        			ElCount++;
+	        		}
+	        	}
+	        }
+//	        System.out.println("Leave Count: " + leaveCount + 
+//	        			"\n" + "Sick Leaves: " + SlCount +
+//	        			"\n" + "Vacation Leaves: " + VlCount +
+//	        			"\n" + "Emergency Leaves: " + ElCount + "\n");
+	        //Populate JTable with data
+			data = new Object[leaveCount][6];
+			
+			
+			int counter = 0;
+			for (int j = leave.length - 1; j >= 0; j--) {
+			    if (leave[j] != null) {
+			    	data[counter][0] = leave[j].employeeNumber;
+			        data[counter][1] = leave[j].leaveType;
+			        data[counter][2] = leave[j].startDate;
+			        data[counter][3] = leave[j].endDate;
+			        data[counter][4] = leave[j].leaveStatus;
+			        data[counter][5] = leave[j].leaveDescription;
+			        counter++;
+			    }
+			}
+			table_1.setModel(new DefaultTableModel(
+			    Arrays.copyOfRange(data, 0, counter),
+			    new String[] {
+			        "Employee No.", "Leave Type", "Start Date", "End Date", "Leave Status", "Leave Description"
+			    }
+			));
+
+			table_1.getColumnModel().getColumn(4).setPreferredWidth(84);
+	        }
 }

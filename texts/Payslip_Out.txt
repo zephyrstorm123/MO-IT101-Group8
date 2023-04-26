@@ -1,0 +1,39 @@
+--------- MotorPH ---------
+PAYROLL INFORMATION
+Employee Name: Brad San Jose
+Payroll Period: 2nd Week September 2022
+Pay Date: September 17, 2022
+ 
+EMPLOYEE INFORMATION
+Employee No.: 10003
+TIN: 672-474-690-000
+SSS No.: 40-2400714-1
+PHIC No.: 23-919292693-9
+HDMF No.: 2108-5020-9964
+Position: HR Team Leader
+Hourly Rate: PHP PHP 255.8
+Overtime Rate: PHP PHP 383.7
+
+EARNINGS
+Taxable Earnings:
+
+Basic Pay - 40.0 hr(s): PHP PHP 9,336.29
+
+TOTAL TAXABLE PAY: PHP PHP 9,336.29
+
+Non-Taxable Earnings:
+Rice Subsidy: PHP PHP 375.00
+Clothing Allowance: PHP PHP 250.00
+Phone Allowance: PHP PHP 250.00
+TOTAL NON-TAXABLE PAY: PHP PHP 875.00
+
+GROSS EARNINGS: PHP PHP 10,211.29
+
+DEDUCTIONS:
+SSS: PHP PHP 427.50
+PhilHealth: PHP PHP 150.00
+Pag-ibig: PHP PHP 100.00
+Withholding Tax: PHP PHP 706.39
+TOTAL DEDUCTIONS: PHP PHP 1,383.89
+
+NET EARNINGS: PHP PHP 8,827.41

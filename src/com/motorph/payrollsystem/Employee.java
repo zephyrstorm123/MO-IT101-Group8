@@ -37,9 +37,8 @@ public class Employee extends JFrame {
 	private JButton btnBack, btnSalaryBack;
 	private JPanel personalInfoPanel, salaryInfoPanel;
 	
-	private String path = "EmployeeDetails.csv", line = "";
+	private String path = "csv/EmployeeDetails.csv", line = "";
 	protected EmployeeDetails[] employee = new EmployeeDetails[25];
-	private int employeeCount;
 	private UserLogin login;
 	private static int user, minus = 10001;
 	
@@ -310,7 +309,6 @@ public class Employee extends JFrame {
 		if (login.user != null) {
 		user = Integer.parseInt(login.user);
 		}
-			employeeCount = 0;
 		try {
 	        BufferedReader br = new BufferedReader(new FileReader(path));
 	        int i = 0;
@@ -332,7 +330,6 @@ public class Employee extends JFrame {
 	                // skip this line
 	                continue;
 	            }
-	            employeeCount++;
 	            employee[i] = new EmployeeDetails(values[0], values[1], values[2], values[3], values[4], values[5],
 	                    values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13],
 	                    values[14], values[15], values[16], values[17], values[18]);
@@ -346,6 +343,7 @@ public class Employee extends JFrame {
 			e.printStackTrace();
 		} 
 	}
+	
 	public void displayPersonalInfo() {
 		readCsvFile();
 		txtLastName.setText(employee[user - minus].lname);

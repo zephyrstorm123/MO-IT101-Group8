@@ -2,16 +2,25 @@ package com.motorph.payrollsystem;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,14 +30,16 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 public class UserLogin extends JFrame implements ActionListener{
-    private String[] empNo = {"10001","10002"};
-    private String[] pass = {"Admin1234","Empl1234"};
+    private String[] empNo = PrintNReadTxt.savedEmpNo;
+    private String[] pass = PrintNReadTxt.savedPass;
     public static String user;
     public boolean loggedIn;
     Scanner scan = new Scanner(System.in);
     // Swing components
     private JLabel lblWelcome, lblEmployeeNumber, lblPassword, background;
-    private JTextField txtEmployeeNumber, txtPassword;
+    private JCheckBox chckbxNewCheckBox;
+    private JTextField txtEmployeeNumber;
+    private JPasswordField txtPassword;
     private JButton btnLogin;
     private JPanel panel_1;
     public Font font = new Font("Nexa Book", Font.BOLD, 15);
@@ -65,7 +76,7 @@ public class UserLogin extends JFrame implements ActionListener{
     	lblEmployeeNumber = new JLabel("Enter Employee Number: ");
     	lblPassword = new JLabel("Enter Password: ");
     	txtEmployeeNumber = new JTextField(10);
-    	txtPassword = new JPasswordField(10);
+    	txtEmployeeNumber.setOpaque(false);
     	btnLogin = new JButton("Log In");
     	btnLogin.addActionListener(this);
     	
@@ -74,12 +85,47 @@ public class UserLogin extends JFrame implements ActionListener{
         lblEmployeeNumber.setBounds(50, 70, 150, 20);
         txtEmployeeNumber.setBounds(200, 70, 150, 20);
         lblPassword.setBounds(50, 100, 150, 20);
-        txtPassword.setBounds(200, 100, 150, 20);
+        
         btnLogin.setBounds(167, 150, 100, 30);
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.setBackground(new Color(0, 128, 0));
-        
+		
+		chckbxNewCheckBox = new JCheckBox("");
+    	chckbxNewCheckBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                int state = e.getStateChange();
+                if (state == ItemEvent.SELECTED) {
+                    txtPassword.setEchoChar((char) 0);
+                } else {
+                	txtPassword.setEchoChar('•');
+                }
+            }
+        });
+    	BufferedImage imgs, img2;
+    	try {
+			imgs = ImageIO.read(new File("images/showDisabled.png"));
+			img2 = ImageIO.read(new File("images/showEnabled.png"));
+		Image scaledImg = imgs.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		Image scaledImg2 = img2.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		ImageIcon img = new ImageIcon(scaledImg);
+		ImageIcon pImg = new ImageIcon(scaledImg2);
+		chckbxNewCheckBox.setIcon(img);
+		chckbxNewCheckBox.setSelectedIcon(pImg);
+		chckbxNewCheckBox.setVisible(true);
+		chckbxNewCheckBox.setOpaque(false);
+		chckbxNewCheckBox.setContentAreaFilled(false);
+		chckbxNewCheckBox.setBorderPainted(false);
+
+    	chckbxNewCheckBox.setBounds(303, 99, 97, 23);
+    	} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} // read image file
+    	
+    	txtPassword = new JPasswordField(10);
+    	txtPassword.setOpaque(false);
+        txtPassword.setBounds(200, 100, 150, 20);
         // Set font style
         lblWelcome.setFont(font);
         
@@ -105,18 +151,16 @@ public class UserLogin extends JFrame implements ActionListener{
     	
     	panel_1.setVisible(false);
     	panel_1.add(lblUsernameAndPassword);
-    	
-    	
-//    	background.setBounds(0, 0, 450, 250);
-//    	panel.setOpaque(true);
-    	
+
     	panel.add(lblWelcome);
     	panel.add(lblEmployeeNumber);
     	panel.add(txtEmployeeNumber);
     	panel.add(lblPassword);
+    	panel.add(chckbxNewCheckBox);
     	panel.add(txtPassword);
     	panel.add(btnLogin);
     	panel.add(background);
+    	
     	
     	add(panel);
     	

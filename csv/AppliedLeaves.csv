@@ -1,0 +1,26 @@
+10001,Sick Leave,April 25 2023,April 25 2024,Rejected,LBM1
+10005,Sick Leave,April 1 2023,April 3 2024,Approved,Flu1
+10003,Sick Leave,March 23 2023,March 23 2024,Approved,Covid1
+10004,Sick Leave,March 15 2023,March 15 2024,Approved,Flu1
+10004,Sick Leave,February 14 2023,February 16 2024,Approved,Fever1
+10005,Sick Leave,April 1 2023,April 3 2024,Approved,Flu
+10003,Sick Leave,March 23 2023,March 23 2024,Approved,Covid
+10004,Sick Leave,March 15 2023,March 15 2024,Approved,Flu
+10004,Sick Leave,February 14 2023,February 16 2024,Approved,Fever
+10001,Sick Leave,January 4 2023,January 7 2023,Approved,Covid
+10005,Sick Leave,April 1 2023,April 3 2024,Approved,Flu2
+10003,Sick Leave,March 23 2023,March 23 2024,Approved,Covid2
+10004,Sick Leave,March 15 2023,March 15 2024,Approved,Flu2
+10004,Sick Leave,February 14 2023,February 16 2024,Approved,Fever2
+10001,Sick Leave,January 4 2023,January 7 2023,Approved,Covid2
+10001,Emergency Leave,April 27 2023,April 27 2023,Cancelled by Employee,abunaii
+10001,Vacation Leave,April 27 2023,April 27 2023,Cancelled by Employee,Vacay yarnn
+10001,Sick Leave,April 30 2023,May 01 2023,Approved,Im sick huhuhu
+10002,Sick Leave,April 27 2023,April 27 2023,Approved,Comatose
+10002,Emergency Leave,May 10 2023,May 10 2023,Approved,Planned heart attack.
+10001,Emergency Leave,April 12 2023,April 12 2023,Approved,Eme
+10002,Vacation Leave,May 10 2023,April 10 2023,Approved,Out op town
+10003,Emergency Leave,May 30 2023,May 30 2023,Approved,Death of family
+10002,Vacation Leave,June 23 2023,June 25 2023,Approved,Family outing
+10001,Emergency Leave,April 27 2023,April 27 2023,Applied,Planned accident
+10002,Vacation Leave,May 31 2023,May 31 2023,Applied,Muni-muni

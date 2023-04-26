@@ -1,12 +1,17 @@
 package com.motorph.payrollsystem;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -55,7 +60,8 @@ public class PayrollSystem extends JFrame {
 		mainPanel.add(lblMainMenu);
 		
 		btnEmployeeProfile = new JButton("My Employee Profile");
-		btnEmployeeProfile.setBounds(150, 55, 150, 30);
+		btnEmployeeProfile.setBounds(150, 70, 150, 30);
+		btnEmployeeProfile.setFocusable(false);
 		btnEmployeeProfile.addActionListener(new ActionListener() {
 			
 			@Override
@@ -68,7 +74,7 @@ public class PayrollSystem extends JFrame {
 		mainPanel.add(btnEmployeeProfile);
 		
 		btnEmployeeMaster = new JButton("Employee Master");
-		btnEmployeeMaster.setBounds(150, 95, 150, 30);
+		btnEmployeeMaster.setFocusable(false);
 		btnEmployeeMaster.setEnabled(false);
 		btnEmployeeMaster.addActionListener(new ActionListener() {
 			
@@ -84,7 +90,8 @@ public class PayrollSystem extends JFrame {
 		mainPanel.add(btnEmployeeMaster);
 		
 		btnLogout = new JButton("Log Out");
-		btnLogout.setBounds(150, 135, 150, 30);
+		btnLogout.setBounds(150, 110, 150, 30);
+		btnLogout.setFocusable(false);
 		btnLogout.addActionListener(new ActionListener() {
 			
 			@Override
@@ -97,6 +104,39 @@ public class PayrollSystem extends JFrame {
 		});
 		
 		mainPanel.add(btnLogout);
+		
+		JButton btnSettings = new JButton("");
+		btnSettings.setBounds(25, 160, 25, 25);
+		BufferedImage imgs, img2;
+		try {
+			imgs = ImageIO.read(new File("images/settings_icon.png"));
+			img2 = ImageIO.read(new File("images/pressedSettings_icon.png"));
+		Image scaledImg = imgs.getScaledInstance(26, 26, Image.SCALE_SMOOTH);
+		Image scaledImg2 = img2.getScaledInstance(26, 26, Image.SCALE_SMOOTH);
+		ImageIcon img = new ImageIcon(scaledImg);
+		ImageIcon pImg = new ImageIcon(scaledImg2);
+		btnSettings.setIcon(img);
+		btnSettings.setPressedIcon(pImg);
+		
+		btnSettings.setOpaque(false);
+		btnSettings.setContentAreaFilled(false);
+		btnSettings.setBorderPainted(false);
+		btnSettings.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PayrollSettings settings = new PayrollSettings();
+				settings.displaySettings();
+				
+			}
+		});
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} // read image file
+		
+		
+		mainPanel.add(btnSettings);
 		
 		// Initialize the profile panel
 		profilePanel = new JPanel();
@@ -238,6 +278,9 @@ public class PayrollSystem extends JFrame {
     	profilePanel.setVisible(false);
     	printNRead.printRead();
     	if (login.user.equals("10001")) {
+    		btnEmployeeMaster.setBounds(150, 95, 150, 30);
+    		btnLogout.setBounds(150, 135, 150, 30);
+    		btnEmployeeProfile.setBounds(150, 55, 150, 30);
     		btnEmployeeMaster.setEnabled(true);
     	}
     	getContentPane().remove(profilePanel);

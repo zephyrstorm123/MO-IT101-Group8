@@ -9,10 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,6 +38,7 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import java.awt.Insets;
@@ -47,8 +50,7 @@ import com.toedter.calendar.JDateChooser;
 
 public class LeaveApplication extends JFrame {
 
-	String pathSL = "AppliedLeaves.csv", pathVL = "AppliedVacationLeaves.csv", 
-		   pathEL = "AppliedEmergencyLeaves.csv", line = "";
+	String path = "csv/AppliedLeaves.csv",  line = "";
 	SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd yyyy");
 	
 	private static final long serialVersionUID = 1L;
@@ -67,19 +69,19 @@ public class LeaveApplication extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LeaveApplication frame = new LeaveApplication();
-					frame.readCsvFiles();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					LeaveApplication frame = new LeaveApplication();
+//					frame.readCsvFiles();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	
 	public void applyLeave() {
 //		System.out.println(login.getEmployeeNumber());
@@ -93,7 +95,7 @@ public class LeaveApplication extends JFrame {
 		
 		int i = 0;
 		try {
-	        BufferedReader br = new BufferedReader(new FileReader(pathSL));
+	        BufferedReader br = new BufferedReader(new FileReader(path));
 	        while ((line = br.readLine()) != null) {
 
 	            String[] values = line.split(",");
@@ -167,7 +169,7 @@ public class LeaveApplication extends JFrame {
 	public LeaveApplication() {
 		setTitle("MotorPH Employee Leave");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600,411);
+		setSize(600,419);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		
@@ -274,6 +276,7 @@ public class LeaveApplication extends JFrame {
 		txtEndDate.setBounds(89, 76, 136, 20);
 		payrollInformationPanel_1.add(txtEndDate);
 		
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setFont(new Font("Tahoma", Font.BOLD, 11));
 		scrollPane.setBounds(10, 217, 564, 107);
@@ -320,7 +323,7 @@ public class LeaveApplication extends JFrame {
 				int rowIndex = table.getSelectedRow();
 				// open the CSV file for writing
 				try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(pathSL));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
 				// loop through the leave array and write to the CSV file
 				for (LeaveDetails leaveDetail : leave) {
@@ -399,7 +402,7 @@ public class LeaveApplication extends JFrame {
 				                    leaveDetail.leaveType + "," +
 				                    leaveDetail.startDate + "," +
 				                    leaveDetail.endDate + "," +
-				                    "Cancelled" + "," +
+				                    "Cancelled by Employee" + "," +
 				                    leaveDetail.leaveDescription);
 				                writer.newLine();
 				            } else {
@@ -418,7 +421,7 @@ public class LeaveApplication extends JFrame {
 				// close the CSV file
 				writer.close();
 				
-				File originalFile = new File(pathSL);
+				File originalFile = new File(path);
 				if (originalFile.delete()) {
 				    tempFile.renameTo(originalFile);
 				} 
@@ -495,12 +498,19 @@ public class LeaveApplication extends JFrame {
 				return;
 			}
 			
+			if (!txtLeaveDescription.getText().trim().isEmpty()) {
+			    newLeaveDetails[5] = txtLeaveDescription.getText().trim();
+			} else {
+				JOptionPane.showMessageDialog(LeaveApplication.this, "Leave description should not be blank.", "Please Enter Reason", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
 			fileLeave();	
 	}
 	
 	public void fileLeave() {
 		newLeaveDetails[4] = "Applied";
-		newLeaveDetails[5] = txtLeaveDescription.getText();
+		
 		JOptionPane.showMessageDialog(LeaveApplication.this, "Leave application successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
 		
 		// Clear fields after successful application
@@ -512,7 +522,7 @@ public class LeaveApplication extends JFrame {
 		comboBoxLeaveType.setSelectedIndex(0);
 		txtStartDate.setDate(null);
 		txtEndDate.setDate(null);
-		txtLeaveDescription.setText("");
+		txtLeaveDescription.setText(null);
 		SlCount = 0;
 		VlCount = 0;
 		ElCount = 0;
@@ -521,7 +531,7 @@ public class LeaveApplication extends JFrame {
 	
 	public void updateCsvFiles() {
 		try {
-			FileWriter fw = new FileWriter("AppliedLeaves.csv", true);
+			FileWriter fw = new FileWriter("csv/AppliedLeaves.csv", true);
 		    PrintWriter outFile = new PrintWriter(fw);
 				outFile.print(newLeaveDetails[0] + ",");
 				outFile.print(newLeaveDetails[1] + ",");
