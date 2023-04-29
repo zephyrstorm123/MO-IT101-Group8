@@ -1,0 +1,39 @@
+--------- MotorPH ---------
+PAYROLL INFORMATION
+Employee Name: Jose Crisostomo
+Payroll Period: 1st Week September 2022
+Pay Date: September 10, 2022
+ 
+EMPLOYEE INFORMATION
+Employee No.: 10001
+TIN: 317-674-022-000
+SSS No.: 49-1632020-8
+PHIC No.: 38-218945314-5
+HDMF No.: 4410-9336-9646
+Position: HR Manager
+Hourly Rate: PHP PHP 373.04
+Overtime Rate: PHP PHP 559.56
+
+EARNINGS
+Taxable Earnings:
+
+Basic Pay - 36.0 hr(s): PHP PHP 13429.14
+
+TOTAL TAXABLE PAY: PHP PHP 13429.14
+
+Non-Taxable Earnings:
+Rice Subsidy: PHP PHP 375.0
+Clothing Allowance: PHP PHP 250.0
+Phone Allowance: PHP PHP 250.0
+TOTAL NON-TAXABLE PAY: PHP PHP 875.0
+
+GROSS EARNINGS: PHP PHP 14304.14
+
+DEDUCTIONS:
+SSS: PHP PHP 607.5
+PhilHealth: PHP PHP 201.44
+Pag-ibig: PHP PHP 100.0
+Withholding Tax: PHP PHP 1671.74
+TOTAL DEDUCTIONS: PHP PHP 2581.0
+
+NET EARNINGS: PHP PHP 11723.0
