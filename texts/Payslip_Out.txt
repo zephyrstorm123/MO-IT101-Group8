@@ -1,0 +1,39 @@
+--------- MotorPH ---------
+PAYROLL INFORMATION
+Employee Name: Darlene  Lazaro
+Payroll Period: 3rd Week September 2022
+Pay Date: September 24, 2022
+ 
+EMPLOYEE INFORMATION
+Employee No.: 10015
+TIN: 354-650-951-000
+SSS No.: 45-5617168-2
+PHIC No.: 60-638691751-0
+HDMF No.: 1049-0770-8845
+Position: Account Rank and File
+Hourly Rate: PHP PHP 138.39
+Overtime Rate: PHP PHP 207.58
+
+EARNINGS
+Taxable Earnings:
+
+Basic Pay - 38.0 hr(s): PHP PHP 5,258.60
+
+TOTAL TAXABLE PAY: PHP PHP 5,258.60
+
+Non-Taxable Earnings:
+Rice Subsidy: PHP PHP 375.00
+Clothing Allowance: PHP PHP 250.00
+Phone Allowance: PHP PHP 250.00
+TOTAL NON-TAXABLE PAY: PHP PHP 875.00
+
+GROSS EARNINGS: PHP PHP 6,133.60
+
+DEDUCTIONS:
+SSS: PHP PHP 247.50
+PhilHealth: PHP PHP 150.00
+Pag-ibig: PHP PHP 100.00
+Withholding Tax: PHP PHP .00
+TOTAL DEDUCTIONS: PHP PHP 497.50
+
+NET EARNINGS: PHP PHP 5,636.10
