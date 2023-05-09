@@ -75,6 +75,7 @@ public class UserLogin extends JFrame implements ActionListener {
 		txtEmployeeNumber = new JTextField(10);
 		txtEmployeeNumber.setOpaque(false);
 		btnLogin = new JButton("Log In");
+		btnLogin.setFocusable(false);
 		btnLogin.addActionListener(this);
 
 		// Set the position and size of the components
@@ -114,10 +115,10 @@ public class UserLogin extends JFrame implements ActionListener {
 			chckbxNewCheckBox.setContentAreaFilled(false);
 			chckbxNewCheckBox.setBorderPainted(false);
 
-			chckbxNewCheckBox.setBounds(303, 99, 97, 23);
+			chckbxNewCheckBox.setBounds(304, 99, 39, 23);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		} // read image file
+		}
 
 		txtPassword = new JPasswordField(10);
 		txtPassword.setOpaque(false);
@@ -157,7 +158,7 @@ public class UserLogin extends JFrame implements ActionListener {
 		panel.add(btnLogin);
 		panel.add(background);
 
-		add(panel);
+		getContentPane().add(panel);
 
 		txtEmployeeNumber.addKeyListener(new KeyAdapter() {
 			@Override

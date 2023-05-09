@@ -1,38 +1,24 @@
 package com.motorph.payrollsystem;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Image;
-
 import javax.swing.JLabel;
-import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
-import javax.swing.UIManager;
-
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JScrollPane;
 
 public class PayrollSystem extends JFrame {
@@ -44,9 +30,9 @@ public class PayrollSystem extends JFrame {
 	
 	JButton btnPersonalInfo, btnSalaryInfo, btnDailyTimesheet, btnPayslip, btnApplyLeave, 
 	btnEmployeeMaster, btnUserAccounts, btnLogOut, btnSettings;
-	JPanel panePersonalInfo, paneSalaryInfo, paneTimesheet, panePayslip, paneLeave, paneEmployeeMaster, paneSettings, paneUserAccounts;
+	JPanel panePersonalInfo, paneSalaryInfo, paneTimesheet, panePayslip, paneUserAccounts;
 	JLayeredPane layeredPane_1;
-	private JScrollPane scrollPane, scrollPane_1, scrollPane_2;
+	private JScrollPane scrollPane;
 	private JLabel lblUsername, lblNewLabel_2_1;
 	private PrintNReadTxt printNRead;
 	private Employee employee;
@@ -373,8 +359,8 @@ public class PayrollSystem extends JFrame {
 		btnSettings = new JButton("       Settings");
 		btnSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chooseButton(btnSettings);
-				switchPanes(paneSettings);
+				PayrollSettings settings = new PayrollSettings();
+				settings.displaySettings();
 			}
 		});
 		btnSettings.setHorizontalAlignment(SwingConstants.LEFT);
@@ -470,12 +456,6 @@ public class PayrollSystem extends JFrame {
 		paneUserAccounts.setBounds(100, 0, 789, 349);
 		layeredPane_1.add(paneUserAccounts);
 		
-		PayrollSettings settings = new PayrollSettings();
-		
-		paneSettings = (JPanel) settings.getContentPane();
-		paneSettings.setBounds(140, 0, 789, 351);
-		layeredPane_1.add(paneSettings);
-		
 		scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(95, 0, 689, 351);
@@ -486,29 +466,6 @@ public class PayrollSystem extends JFrame {
 		panePayslip.setPreferredSize(new Dimension(620, 680));
 		scrollPane.setViewportView(panePayslip);
 		layeredPane_1.add(scrollPane);
-		
-		LeaveApplication leave = new LeaveApplication();
-		
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBorder(null);
-		scrollPane_1.setBounds(95, 0, 689, 351);
-		paneLeave = (JPanel) leave.getContentPane();
-		paneLeave.setPreferredSize(new Dimension(620, 419));
-		paneLeave.setBounds(30, 0, 647, 351);
-		scrollPane_1.setViewportView(paneLeave);
-		layeredPane_1.add(scrollPane_1);
-		
-		EmployeeMaster empMaster = new EmployeeMaster();
-		
-		scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBorder(null);
-		scrollPane_2.setBounds(1, 0, 789, 351);
-		paneEmployeeMaster = (JPanel) empMaster.getContentPane();
-		paneEmployeeMaster.setPreferredSize(new Dimension(789, 429));
-		paneEmployeeMaster.setBounds(0, 0, 789, 351);
-		scrollPane_2.setViewportView(paneEmployeeMaster);
-		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		layeredPane_1.add(scrollPane_2);
 		
 	}
 	

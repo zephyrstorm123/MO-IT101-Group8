@@ -1,6 +1,6 @@
 package com.motorph.payrollsystem;
 
-import java.awt.EventQueue;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -8,11 +8,9 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,45 +21,40 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Image;
 
 import javax.swing.SwingConstants;
-import javax.swing.JMenuItem;
+
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JTextField;
 import javax.swing.JTabbedPane;
-import java.awt.FlowLayout;
+
 
 public class PayrollSettings extends JFrame {
+
+	private static final long serialVersionUID = 1L;
 	private JTextField txtCurrentPass;
 	private JTextField txtNewPass;
 	private JTextField txtNewPass2;
 	private PrintNReadTxt printRead;
 	private JCheckBox chckbxNewCheckBox, chckNewPass, chckAgainPass;
-	private String line = "";
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					PayrollSettings frame = new PayrollSettings();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 	
 	public void displaySettings() {
-		setVisible(true);
+	    JDialog dialog = new JDialog(this, this.getTitle(), true);
+	    dialog.getContentPane().add(this.getContentPane()); // add the panel to the dialog's content pane
+	    dialog.pack();
+	    dialog.setSize(this.getSize());
+	    dialog.setLocationRelativeTo(this); // set the dialog location relative to the main frame
+	    dialog.setResizable(false);
+	    dialog.setModal(true);
+	    dialog.setVisible(true);
 	}
+
 
 	/**
 	 * Create the frame.
@@ -88,6 +81,18 @@ public class PayrollSettings extends JFrame {
     	ImageIcon icon = new ImageIcon("MOTORPH.png");
     	setIconImage(icon.getImage());
     	getContentPane().setLayout(null);
+    	
+    	JButton btnBack = new JButton("Back");
+    	btnBack.setBounds(182, 194, 64, 23);
+    	btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
+    	getContentPane().add(btnBack);
     	
     	
     	
@@ -126,7 +131,7 @@ public class PayrollSettings extends JFrame {
     	chckNewPass.setSelectedIcon(pImg);
     	chckAgainPass.setSelectedIcon(pImg);
     	} catch (IOException e1) {
-
+			
 			e1.printStackTrace();
 		}
     	
@@ -245,7 +250,7 @@ public class PayrollSettings extends JFrame {
 	}
 	
 	public boolean checkCurrent(String current) {
-		String saved = PrintNReadTxt.savedPass[Integer.parseInt(UserLogin.user) - 10001];
+		String saved = PrintNReadTxt.user[Integer.parseInt(UserLogin.user) - 10001].password;
 		if (current.equals(saved)) {
 			return true;
 		} else { return false; }
@@ -264,35 +269,38 @@ public class PayrollSettings extends JFrame {
 	}
 	
 	public void saveNewPassword(String newPassword) {
+		int empNo = Integer.parseInt(UserLogin.user) - 10001;
+		
 		try {
 	        BufferedWriter writer = new BufferedWriter(new FileWriter("csv/LogInCredentials.csv"));
-	     // loop through the user detail array and write to the CSV file
-	        	for (UserDetails userDetail : PrintNReadTxt.user) {
-	        		// check if userDetail is not null
-	        		if (userDetail != null) {
-	        			// check if this is the employee's password to be edited
-	        			if (userDetail.employeeNumber.equals(UserLogin.user)) {
-	        				writer.write(userDetail.employeeNumber + "," +
+	     // loop through the user array and write to the CSV file
+	        	for (int i = 0; i < PrintNReadTxt.user.length; i++) {
+//	        		if (PrintNReadTxt.user[i] != null) {
+	        			// if i is equal to new employee number, write the entered details on that index/line
+	        			if (i == empNo) {
+	        				writer.write(PrintNReadTxt.user[i].employeeNumber + "," +
 	        						 newPassword + "," +
-	        						 userDetail.systemRole + "," +
-	        						 userDetail.accountStatus);
+	        						 PrintNReadTxt.user[i].systemRole + "," +
+	        						 PrintNReadTxt.user[i].accountStatus);
 	        				 writer.newLine();
+	        			} else if (PrintNReadTxt.user[i] == null) { 
+	        				continue;
 	        			} else {
 	        				// write the original user detail to the CSV file
-	        				writer.write(userDetail.employeeNumber + "," +
-	        						userDetail.password + "," +
-	        						 userDetail.systemRole + "," +
-	        						 userDetail.accountStatus);
+	        				writer.write(PrintNReadTxt.user[i].employeeNumber + "," +
+	        						PrintNReadTxt.user[i].password + "," +
+	        						PrintNReadTxt.user[i].systemRole + "," +
+	        						PrintNReadTxt.user[i].accountStatus);
 	        				 writer.newLine();
 	        			}
-	        		}
-	        }
-	        writer.close();
+//	        		}
+	        } writer.close();
 		} catch (FileNotFoundException e) {
 	        e.printStackTrace();
 	    } catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public void clearTextBoxes() {

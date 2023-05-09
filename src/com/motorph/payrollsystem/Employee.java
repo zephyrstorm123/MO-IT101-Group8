@@ -2,17 +2,13 @@ package com.motorph.payrollsystem;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,7 +17,7 @@ import javax.swing.JTextField;
 
 public class Employee extends JFrame {
 	
-	
+	private static final long serialVersionUID = 1L;
 	private JLabel lblPersonalInfo,lblSalaryInfo, lblEmployeeNo, lblLastName, 
 	lblFirstName, lblBirthday, lblAddress, lblPhoneNo, lblSssNo, lblPhic, lblTinNo,
 	lblHdmfNo;
@@ -38,11 +34,9 @@ public class Employee extends JFrame {
 	
 	private String path = "csv/EmployeeDetails.csv", line = "";
 	protected EmployeeDetails[] employee = new EmployeeDetails[25];
-	private UserLogin login;
 	private static int user, minus = 10001;
 	
 	public Employee() {
-		login = new UserLogin();
 		// Swing components
 		// Initialize panel for personal information
 		personalInfoPanel = new JPanel();
@@ -65,7 +59,7 @@ public class Employee extends JFrame {
 		txtEmployeeNo = new JTextField(20);
 		txtEmployeeNo.setEnabled(false);
 		txtEmployeeNo.setDisabledTextColor(new Color(128, 128, 128));
-		txtEmployeeNo.setText(login.user);
+		txtEmployeeNo.setText(UserLogin.user);
 		
 		txtLastName = new JTextField(20);
 		txtLastName.setEnabled(false);
@@ -284,8 +278,8 @@ public class Employee extends JFrame {
 	
 	public void readCsvFile() {
 		//Read from EmployeeDetails.csv
-		if (login.user != null) {
-		user = Integer.parseInt(login.user);
+		if (UserLogin.user != null) {
+		user = Integer.parseInt(UserLogin.user);
 		}
 		try {
 	        BufferedReader br = new BufferedReader(new FileReader(path));

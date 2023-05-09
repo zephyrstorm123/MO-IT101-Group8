@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -54,6 +57,7 @@ import javax.swing.table.TableModel;
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.border.BevelBorder;
 
 public class LeaveApplication extends JFrame {
 
@@ -73,9 +77,10 @@ public class LeaveApplication extends JFrame {
 	private JButton btnCancel_1;
 	JButton btnCancel;
 	private LeaveDetails deletedLeave;
-	private JLabel lblDescError;
+	private JLabel lblDescError, lblSL, lblVL, lblEL, lblSLCount, lblVLCount, lblELCount;
 	private JTextField txtEmpNo;
 	JScrollPane scrollPane;
+	private JPanel panelAvailableLeaves;
 	LeavePageRedirector redirector;
 	/**
 	 * Launch the application.
@@ -147,6 +152,56 @@ public class LeaveApplication extends JFrame {
 		payrollInformationPanel_1.setBorder(new LineBorder(new Color(192, 192, 192), 1, true));
 		payrollInformationPanel_1.setBounds(10, 51, 564, 143);
 		getContentPane().add(payrollInformationPanel_1);
+		
+		panelAvailableLeaves = new JPanel();
+		panelAvailableLeaves.setVisible(false);
+		panelAvailableLeaves.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, new Color(128, 128, 128), null));
+		panelAvailableLeaves.setBounds(455, 44, 103, 97);
+		
+		getContentPane().addMouseListener(new MouseAdapter()  {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        if (panelAvailableLeaves.isVisible() && !panelAvailableLeaves.getBounds().contains(e.getPoint())) {
+		        	panelAvailableLeaves.setVisible(false);
+		        }
+		    }
+		});
+		
+		payrollInformationPanel_1.add(panelAvailableLeaves);
+		panelAvailableLeaves.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Leaves Left:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 10));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(1, 11, 100, 14);
+		panelAvailableLeaves.add(lblNewLabel);
+		
+		lblSL = new JLabel("SL:");
+		lblSL.setBounds(16, 34, 46, 14);
+		panelAvailableLeaves.add(lblSL);
+		
+		lblVL = new JLabel("VL:");
+		lblVL.setBounds(16, 52, 46, 14);
+		panelAvailableLeaves.add(lblVL);
+		
+		lblEL = new JLabel("EL:");
+		lblEL.setBounds(16, 70, 46, 14);
+		panelAvailableLeaves.add(lblEL);
+		
+		lblSLCount = new JLabel("");
+		lblSLCount.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblSLCount.setBounds(67, 34, 46, 14);
+		panelAvailableLeaves.add(lblSLCount);
+		
+		lblVLCount = new JLabel("");
+		lblVLCount.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblVLCount.setBounds(67, 52, 46, 14);
+		panelAvailableLeaves.add(lblVLCount);
+		
+		lblELCount = new JLabel("");
+		lblELCount.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblELCount.setBounds(67, 70, 46, 14);
+		panelAvailableLeaves.add(lblELCount);
 		
 		JLabel lblAddNewLeave = new JLabel("Add New Leave:");
 		lblAddNewLeave.setHorizontalAlignment(SwingConstants.CENTER);
@@ -250,6 +305,19 @@ public class LeaveApplication extends JFrame {
 		txtEmpNo.setBackground(new Color(255,255,255));
 		payrollInformationPanel_1.add(txtEmpNo);
 		txtEmpNo.setColumns(10);
+		
+		JButton btnShowCount = new JButton("...");
+		btnShowCount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!panelAvailableLeaves.isVisible()) panelAvailableLeaves.setVisible(true);
+				else panelAvailableLeaves.setVisible(false);
+			}
+		});
+		btnShowCount.setFocusable(false);
+		btnShowCount.setToolTipText("Show Remaining Leaves");
+		btnShowCount.setBounds(455, 25, 26, 20);
+		payrollInformationPanel_1.add(btnShowCount);
 		
 		
 		scrollPane = new JScrollPane();
@@ -477,6 +545,11 @@ public class LeaveApplication extends JFrame {
 	        			"\n" + "Sick Leaves: " + SlCount +
 	        			"\n" + "Vacation Leaves: " + VlCount +
 	        			"\n" + "Emergency Leaves: " + ElCount + "\n");
+	        
+	        lblSLCount.setText(5- SlCount + "");
+	        lblVLCount.setText(10 - VlCount + "");
+	        lblELCount.setText(5- ElCount + "");
+	        
 	        //Populate JTable with data
 			data = new Object[leaveCount][5];
 			
